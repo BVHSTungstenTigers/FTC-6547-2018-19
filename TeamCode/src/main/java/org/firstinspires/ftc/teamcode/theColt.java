@@ -43,7 +43,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @Disabled
-class theColt extends LinearOpMode{
+public class theColt extends LinearOpMode{
     final double encoderTicksPerRotation=510;
     final double circumferenceOfWheel=12.566370614359172;
 
@@ -99,7 +99,7 @@ class theColt extends LinearOpMode{
     final int GOLD_MINERAL_UNKNOWN=999; //UNKNOWN could be any value bigger than 2 or less than 0, just saying
     int goldMineralLocation=GOLD_MINERAL_UNKNOWN;
 
-    ElapsedTime runtime = new ElapsedTime();
+    protected ElapsedTime runtime = new ElapsedTime();
 
     final String GYRO_ANGLE_FILE_NAME="gyroAngle.json";
 
@@ -114,12 +114,12 @@ class theColt extends LinearOpMode{
     DcMotor LeftBack;
     DcMotor RightBack;
 
-    DcMotor hanger;
-    DcMotor intake;
-    DcMotor arm;
-    DcMotor linearSlide;
+    protected DcMotor hanger;
+    protected DcMotor intake;
+    protected DcMotor arm;
+    protected DcMotor linearSlide;
 
-    RevBlinkinLedDriver lights;
+    protected RevBlinkinLedDriver lights;
 
     Servo teamMarker;
     Servo mineralArm;
@@ -401,11 +401,11 @@ class theColt extends LinearOpMode{
         }
         else return false;
     }
-    double getCurrentPercentArmLowered()
+    protected double getCurrentPercentArmLowered()
     {
         return arm.getCurrentPosition()/armMaxEncoder;
     }
-    double getCurrentPercentArmExtended()
+    protected double getCurrentPercentArmExtended()
     {
         return linearSlide.getCurrentPosition()/linearSlideMaxEncoder;
     }
@@ -772,7 +772,7 @@ class theColt extends LinearOpMode{
         arm.setPower(0);
         hanger.setPower(0);
     }
-    void lowerArm(double armLoweredPercent, double armExtensionPercent, double time)
+    protected void lowerArm(double armLoweredPercent, double armExtensionPercent, double time)
     {
         //set arm infomation
         //MiniPID armPID = new MiniPID(.10, 0.00, 0);
@@ -1196,12 +1196,12 @@ class theColt extends LinearOpMode{
         hanger.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hanger.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    void zeroArm()
+    protected void zeroArm()
     {
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    void zeroLinearSlide()
+    protected void zeroLinearSlide()
     {
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         linearSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

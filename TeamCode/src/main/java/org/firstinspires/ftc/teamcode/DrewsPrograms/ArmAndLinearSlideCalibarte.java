@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.DrewsPrograms;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.theColt;
+
 @TeleOp(name="Arm and Linear Slide Calibrate")
 public class ArmAndLinearSlideCalibarte extends theColt {
 
