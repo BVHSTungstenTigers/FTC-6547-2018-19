@@ -33,6 +33,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.Func;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.robotcore.internal.system.ClassFactoryImpl;
 
 import java.util.List;
 import java.util.Locale;
@@ -475,7 +476,7 @@ public class theColt extends LinearOpMode{
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+        if (1+1 == 2) { //TODO: if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                     "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
             TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
