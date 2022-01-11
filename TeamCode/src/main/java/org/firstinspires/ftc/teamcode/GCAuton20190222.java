@@ -63,15 +63,15 @@ public class GCAuton20190222 extends theColt {
         TurnPID(0,2); //make sure the robot is facing straight towards the depot for deploying the team marker
         if (goldMineralLocation==GOLD_MINERAL_LEFT && getRobotPositionX()>24) do
         {
-            setEquation(new double[] {3});
-            driveOverLine(.5, 24, 72, true);
+            // TODO setEquation(new double[] {3});
+            // TODO driveOverLine(.5, 24, 72, true);
             TurnPID(0,2);
         } while (getRobotPositionX()>24);
         if (goldMineralLocation==GOLD_MINERAL_RIGHT) DriveforLength(.8, -.5);
         deployTeamMarker();
-        setEquation(new double[] {3});
+        // TODO setEquation(new double[] {3});
         do {
-            driveOverLinePID(38, 5, 3); //to halfway creater
+            // TODO driveOverLinePID(38, 5, 3); //to halfway creater
             TurnPID(0, 2);
         } while (getRobotPositionX()<40 && (distanceSensorX.getDistance(DistanceUnit.INCH))!=0 && (distanceSensorY.getDistance(DistanceUnit.INCH))!=0 && gametime.seconds()<24);
         // XXX The above loop should use getRobotPositionX() and getRobotPositionY() instead of accessing the sensors directly.
