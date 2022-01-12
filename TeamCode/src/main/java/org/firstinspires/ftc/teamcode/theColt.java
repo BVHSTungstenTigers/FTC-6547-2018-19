@@ -33,7 +33,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.Func;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import org.firstinspires.ftc.robotcore.internal.system.ClassFactoryImpl;
 
 import java.util.List;
 import java.util.Locale;
@@ -92,7 +91,6 @@ public class theColt extends LinearOpMode{
     TFObjectDetector tfod;
 
     final double ROBOT_FACING_LEFT=-20;
-    double robotRotation=ROBOT_FACING_LEFT;
 
     final int GOLD_MINERAL_LEFT=0;
     final int GOLD_MINERAL_CENTER=1;
@@ -127,7 +125,7 @@ public class theColt extends LinearOpMode{
 
     ColorSensor colorSensor;
 
-    boolean is11874Bot=false;
+    boolean is11874Bot;
 
     double offsetX=0;
     double offsetY=0;
@@ -163,10 +161,7 @@ public class theColt extends LinearOpMode{
             lights=hardwareMap.get(RevBlinkinLedDriver.class, "lights");
             limitSwitch=hardwareMap.get(AnalogInput.class, "limit switch");
             colorSensor=hardwareMap.get(ColorSensor.class,"arm color sensor");
-            //arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            //arm.setTargetPosition(.9);
-            // zeroLinearSlide();
-            // zeroArm();
+
             mineralArm.setPosition(0);
             teamMarker.setPosition(1);
         }
@@ -282,7 +277,7 @@ public class theColt extends LinearOpMode{
         while (opModeIsActive() && runtime.seconds() < seconds) {
 
             output = miniPID.getOutput(actual, target);
-            if (angle>175 || angle <-175) actual = getIMUAngle(true);
+            if (angle>175 || angle <-175) actual = getIMUAngleBeyond180();
             else actual = getIMUAngle();
             turnLeft(output*motorPowerModifer);
             //if (power>.07 || power <-.07) turnLeft(power/2); else turnLeft(power*1.3);
@@ -328,7 +323,7 @@ public class theColt extends LinearOpMode{
         while (opModeIsActive() && (runtime.seconds() < seconds || arm.isBusy() || linearSlide.isBusy())) {
 
             output = miniPID.getOutput(actual, target);
-            if (angle>175 || angle <-175) actual = getIMUAngle(true);
+            if (angle>175 || angle <-175) actual = getIMUAngleBeyond180();
             else actual = getIMUAngle();
             turnLeft(-output);
             if (!arm.isBusy()) arm.setPower(0);
@@ -435,7 +430,7 @@ public class theColt extends LinearOpMode{
                         }
                         if (goldMineralX != -1) {
                             if (silverMineral1X>=goldMineralX) goldMineralLocation=GOLD_MINERAL_CENTER;
-                            else if (silverMineral1X<goldMineralX) goldMineralLocation=GOLD_MINERAL_RIGHT;
+                            else goldMineralLocation=GOLD_MINERAL_RIGHT;
                         } else goldMineralLocation=GOLD_MINERAL_LEFT;
                     }
                     telemetry.addData("gold mineral location", (goldMineralLocation==GOLD_MINERAL_LEFT) ? "LEFT" : (goldMineralLocation==GOLD_MINERAL_CENTER) ? "CENTER" : (goldMineralLocation==GOLD_MINERAL_RIGHT) ? "RIGHT" : "UNKNOWN");
@@ -485,10 +480,7 @@ public class theColt extends LinearOpMode{
         } else {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
-        /** Activate Tensor Flow Object Detection. */
-        if (tfod != null) {
-            //tfod.activate();
-        }
+        //tfod.activate();
 
     }
     double getIMUAngle()
@@ -498,11 +490,9 @@ public class theColt extends LinearOpMode{
         while (currentAngle<-180)currentAngle+=360;
         return currentAngle;
     }
-    double getIMUAngle(boolean extendBeyond180)
+    double getIMUAngleBeyond180()
     {
-        double currentAngle=angles.firstAngle+angleZzeroValue;
-        if (extendBeyond180) return currentAngle;
-        else return getIMUAngle();
+        return angles.firstAngle+angleZzeroValue;
     }
 
     void initIMU()
@@ -533,57 +523,27 @@ public class theColt extends LinearOpMode{
 
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
-        telemetry.addAction(new Runnable() { @Override public void run()
-        {
+        telemetry.addAction(() -> {
             // Acquiring the angles is relatively expensive; we don't want
             // to do that in each of the three items that need that info, as that's
             // three times the necessary expense.
             angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity  = imu.getGravity();
             thing = imu.getVelocity();
-        }
         });
         telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override public String value() {
-                        return imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override public String value() {
-                        return imu.getCalibrationStatus().toString();
-                    }
-                });
+                .addData("status", () -> imu.getSystemStatus().toShortString())
+                .addData("calib", () -> imu.getCalibrationStatus().toString());
         telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.thirdAngle);
-                    }
-                });
+                .addData("heading", () -> formatAngle(angles.angleUnit, angles.firstAngle))
+                .addData("roll", () -> formatAngle(angles.angleUnit, angles.secondAngle))
+                .addData("pitch", () -> formatAngle(angles.angleUnit, angles.thirdAngle));
         telemetry.addLine()
-                .addData("grvty", new Func<String>() {
-                    @Override public String value() {
-                        return gravity.toString();
-                    }
-                })
-                .addData("mag", new Func<String>() {
-                    @Override public String value() {
-                        return String.format(Locale.getDefault(), "%.3f",
-                                Math.sqrt(gravity.xAccel*gravity.xAccel
-                                        + gravity.yAccel*gravity.yAccel
-                                        + gravity.zAccel*gravity.zAccel));
-                    }
-                });
+                .addData("grvty", () -> gravity.toString())
+                .addData("mag", () -> String.format(Locale.getDefault(), "%.3f",
+                        Math.sqrt(gravity.xAccel*gravity.xAccel
+                                + gravity.yAccel*gravity.yAccel
+                                + gravity.zAccel*gravity.zAccel)));
     }
 
     //----------------------------------------------------------------------------------------------
@@ -634,7 +594,6 @@ public class theColt extends LinearOpMode{
         double inches = feet*12;
         double encodersPerInch = encoderTicksPerRotation/circumferenceOfWheel;
         double drivingDistanceInEncoderTicks = encodersPerInch*inches;
-        double speed = power;
         double desiredAngle =Math.toRadians(angleInDegrees)-Math.PI / 4;
         //double robotAngle = Math.toRadians(getIMUAngle());
         telemetry.log().add("averge encoder" + averageDrivetrainEncoder());
@@ -644,10 +603,10 @@ public class theColt extends LinearOpMode{
             else if (getIMUAngle()<=targetAngle-5) rightX=-Math.abs(rightX);
             else rightX=0;
             double robotAngle = Math.toRadians(getIMUAngle());
-            LeftFront.setPower(speed * Math.cos(desiredAngle-robotAngle) + rightX);
-            RightFront.setPower(speed * Math.sin(desiredAngle-robotAngle) - rightX);
-            LeftBack.setPower(speed * Math.sin(desiredAngle-robotAngle) + rightX);
-            RightBack.setPower(speed * Math.cos(desiredAngle-robotAngle) - rightX);
+            LeftFront.setPower(power * Math.cos(desiredAngle-robotAngle) + rightX);
+            RightFront.setPower(power * Math.sin(desiredAngle-robotAngle) - rightX);
+            LeftBack.setPower(power * Math.sin(desiredAngle-robotAngle) + rightX);
+            RightBack.setPower(power * Math.cos(desiredAngle-robotAngle) - rightX);
             outputTelemetry();
         }
         stopRobot();
@@ -659,7 +618,6 @@ public class theColt extends LinearOpMode{
         double inches = feet*12;
         double encodersPerInch = encoderTicksPerRotation/circumferenceOfWheel;
         double drivingDistanceInEncoderTicks = encodersPerInch*inches;
-        double speed = power;
         double desiredAngle =Math.toRadians(angleInDegrees)-Math.PI / 4;
         //double robotAngle = Math.toRadians(getIMUAngle());
         double rightX = 0;
@@ -667,10 +625,10 @@ public class theColt extends LinearOpMode{
         while (opModeIsActive() && Math.abs(averageDrivetrainEncoder())<Math.abs(drivingDistanceInEncoderTicks))
         {
             double robotAngle = Math.toRadians(getIMUAngle());
-            LeftFront.setPower(speed * Math.cos(desiredAngle-robotAngle) + rightX);
-            RightFront.setPower(speed * Math.sin(desiredAngle-robotAngle) - rightX);
-            LeftBack.setPower(speed * Math.sin(desiredAngle-robotAngle) + rightX);
-            RightBack.setPower(speed * Math.cos(desiredAngle-robotAngle) - rightX);
+            LeftFront.setPower(power * Math.cos(desiredAngle-robotAngle) + rightX);
+            RightFront.setPower(power * Math.sin(desiredAngle-robotAngle) - rightX);
+            LeftBack.setPower(power * Math.sin(desiredAngle-robotAngle) + rightX);
+            RightBack.setPower(power * Math.cos(desiredAngle-robotAngle) - rightX);
             outputTelemetry();
         }
         stopRobot();
@@ -682,7 +640,6 @@ public class theColt extends LinearOpMode{
         double inches = feet*12;
         double encodersPerInch = encoderTicksPerRotation/circumferenceOfWheel;
         double drivingDistanceInEncoderTicks = encodersPerInch*inches;
-        double speed = power;
         double desiredAngle =Math.toRadians(angleInDegrees)-Math.PI / 4;
         //double robotAngle = Math.toRadians(getIMUAngle());
         double rightX = 0;
@@ -700,10 +657,10 @@ public class theColt extends LinearOpMode{
         while (opModeIsActive() && Math.abs(averageDrivetrainEncoder())<Math.abs(drivingDistanceInEncoderTicks))
         {
             double robotAngle = Math.toRadians(getIMUAngle());
-            LeftFront.setPower(speed * Math.cos(desiredAngle-robotAngle) + rightX);
-            RightFront.setPower(speed * Math.sin(desiredAngle-robotAngle) - rightX);
-            LeftBack.setPower(speed * Math.sin(desiredAngle-robotAngle) + rightX);
-            RightBack.setPower(speed * Math.cos(desiredAngle-robotAngle) - rightX);
+            LeftFront.setPower(power * Math.cos(desiredAngle-robotAngle) + rightX);
+            RightFront.setPower(power * Math.sin(desiredAngle-robotAngle) - rightX);
+            LeftBack.setPower(power * Math.sin(desiredAngle-robotAngle) + rightX);
+            RightBack.setPower(power * Math.cos(desiredAngle-robotAngle) - rightX);
             outputTelemetry();
             if (!isLimitSwitchPressed()) hanger.setPower(.7);
             else hanger.setPower(0);
@@ -721,58 +678,7 @@ public class theColt extends LinearOpMode{
         stopRobot();
 
     }
-    void driveToPointPIDandLowerArm(double x, double y, double armLoweredPercent, double armExtensionPercent, double time)
-    {
-        MiniPID miniPID = new MiniPID(.055, 0.000, 0.04);
-        miniPID.setSetpoint(0);
-        miniPID.setSetpoint(x);
-        miniPID.setOutputLimits(1);
 
-        miniPID.setSetpointRange(40);
-
-        double actualX=0;
-        double outputX=0;
-
-        MiniPID miniPIDY = new MiniPID(.10, 0.00, 0.05);
-        miniPIDY.setSetpoint(0);
-        miniPIDY.setSetpoint(y);
-        miniPIDY.setOutputLimits(1);
-
-        miniPIDY.setSetpointRange(40);
-
-        double actualY=0;
-        double outputY=0;
-
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition((int) (armMaxEncoder*armLoweredPercent));
-        arm.setPower(1);
-
-        //MiniPID slidePID = new MiniPID(.10, 0.00, 0);
-        linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        linearSlide.setTargetPosition((int) (linearSlideMaxEncoder*armExtensionPercent));
-        linearSlide.setPower(1);
-
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds()<time) {
-            if (!arm.isBusy()) arm.setPower(0);
-            if (!linearSlide.isBusy()) linearSlide.setPower(0);
-            actualX = getRobotPositionX();
-            outputX = miniPID.getOutput(actualX, x);
-            actualY = getRobotPositionY();
-            outputY = miniPIDY.getOutput(actualY, y);
-            double power = Math.hypot(outputX, outputY);
-            //if (power>.8) power = .8; //set max power as .8
-            double slope = getSlope(x, y, actualX, actualY);
-            double angle = Math.toDegrees(Math.atan2(outputX, -outputY));
-            DriveFieldRealtiveSimple(power, angle);
-            if (!isLimitSwitchPressed()) hanger.setPower(.7);
-            else hanger.setPower(0);
-        }
-        stopRobot();
-        linearSlide.setPower(0);
-        arm.setPower(0);
-        hanger.setPower(0);
-    }
     protected void lowerArm(double armLoweredPercent, double armExtensionPercent, double time)
     {
         //set arm infomation
@@ -886,9 +792,8 @@ public class theColt extends LinearOpMode{
     void strafeToDistanceXPID(double inch, double time, double offset)
     {
         MiniPID miniPID = new MiniPID(.055, 0.000, 0.04);
-        double target = inch;
         miniPID.setSetpoint(0);
-        miniPID.setSetpoint(target);
+        miniPID.setSetpoint(inch);
         miniPID.setOutputLimits(1);
 
         miniPID.setSetpointRange(40);
@@ -899,7 +804,7 @@ public class theColt extends LinearOpMode{
         while (opModeIsActive() && runtime.seconds()<time) {
 
             actual = getRobotPositionX();
-            output = miniPID.getOutput(actual, target);
+            output = miniPID.getOutput(actual, inch);
             DriveFieldRealtiveSimple(output, (output>=0) ? 90+offset : 270+offset);
             telemetry.addData("Output", output);
             telemetry.addData("Pos X", getRobotPositionX());
@@ -934,20 +839,19 @@ public class theColt extends LinearOpMode{
     void strafeToDistanceYPID(double inch, double gap, double offset)
     {
         MiniPID miniPID = new MiniPID(.10, 0.00, 0.05);
-        double target = inch;
         miniPID.setSetpoint(0);
-        miniPID.setSetpoint(target);
+        miniPID.setSetpoint(inch);
         miniPID.setOutputLimits(1);
 
         miniPID.setSetpointRange(40);
 
-        double actual=0;
-        double output=0;
+        double actual;
+        double output;
         runtime.reset();
         while (opModeIsActive() && runtime.seconds()<gap) {
 
             actual = getRobotPositionY();
-            output = miniPID.getOutput(actual, target);
+            output = miniPID.getOutput(actual, inch);
             DriveFieldRealtiveSimple(output, (output>=0) ? 180+offset : 0+offset);
             telemetry.addData("Output", output);
             telemetry.addData("Pos Y", getRobotPositionY());
@@ -1030,7 +934,6 @@ public class theColt extends LinearOpMode{
             outputY = miniPIDY.getOutput(actualY, y);
             double power = Math.hypot(outputX, outputY);
             //if (power>.8) power = .8; //set max power as .8
-            double slope = getSlope(x, y, actualX, actualY);
             double angle = Math.toDegrees(Math.atan2(outputX, -outputY)) + offset;
             DriveFieldRealtiveSimple(power, angle);
             if (Math.abs(getIMUAngle())>=5)
@@ -1095,9 +998,8 @@ public class theColt extends LinearOpMode{
     public double getRobotPositionXSonar()
     {
         double voltage=distanceSensorXSonar.getVoltage();
-        double distance=6+(voltage / 0.006);
-//        telemetry.log().add("voltage = %d, distance = %d", voltage, distance);
-        return distance;
+        //        telemetry.log().add("voltage = %d, distance = %d", voltage, distance);
+        return 6+(voltage / 0.006);
     }
     public double getRobotPositionXRev2m()
     {
@@ -1164,13 +1066,9 @@ public class theColt extends LinearOpMode{
     }
     public boolean isLimitSwitchPressed()
     {
-        if (limitSwitch.getVoltage()>1.5) return true;
-        else return false;
+        return limitSwitch.getVoltage() > 1.5;
     }
-    double getSlope(double x1, double y1, double x2, double y2)
-    {
-        return (y1-y2)/(x1-x2);
-    }
+
     double averageDrivetrainEncoder()
     {
         double motorposition=0;
