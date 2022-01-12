@@ -531,9 +531,9 @@ public class theColt extends LinearOpMode{
             gravity  = imu.getGravity();
             thing = imu.getVelocity();
         });
-        telemetry.addLine()
-                .addData("status", () -> imu.getSystemStatus().toShortString())
-                .addData("calib", () -> imu.getCalibrationStatus().toString());
+                                telemetry.addLine()
+                                        .addData("status", () -> imu.getSystemStatus().toShortString())
+                                        .addData("calib", () -> imu.getCalibrationStatus().toString());
         telemetry.addLine()
                 .addData("heading", () -> formatAngle(angles.angleUnit, angles.firstAngle))
                 .addData("roll", () -> formatAngle(angles.angleUnit, angles.secondAngle))

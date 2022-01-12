@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.wolfram;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Control Linear")
-public class TeleOpLinear extends CustomOpMode {
+@TeleOp(name="Controller Simple POV Linear")
+public class TeleOpPOVLinear extends CustomOpMode {
     @Override
     public void loop() {
         super.loop();
