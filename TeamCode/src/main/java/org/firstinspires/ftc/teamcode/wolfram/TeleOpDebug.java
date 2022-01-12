@@ -55,6 +55,10 @@ public class TeleOpDebug extends CustomOpMode {
         getBot().getBackLeftMotor().setPower(gamepad1.x ? debugMotorSpeed : 0);
         getBot().getBackRightMotor().setPower(gamepad1.y ? debugMotorSpeed : 0);
 
+        // Add telemetry for limit switch and LED
+        getBot().dumpTelemetry(telemetry);
+        telemetry.update();
+
         // Wait 50ms to avoid to much insanity
         try {
             Thread.sleep(50);

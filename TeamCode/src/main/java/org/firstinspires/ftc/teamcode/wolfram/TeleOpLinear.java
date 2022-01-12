@@ -19,5 +19,8 @@ public class TeleOpLinear extends CustomOpMode {
         getBot().getBackLeftMotor().setPower(r * Math.sin(robotAngle) + rightX);
         getBot().getFrontRightMotor().setPower(r * Math.sin(robotAngle) - rightX);
         getBot().getBackRightMotor().setPower(r * Math.cos(robotAngle) - rightX);
+
+        getBot().dumpTelemetry(telemetry);
+        telemetry.update();
     }
 }
