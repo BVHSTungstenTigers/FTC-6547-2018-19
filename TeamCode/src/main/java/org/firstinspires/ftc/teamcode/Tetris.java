@@ -1,6 +1,7 @@
 //might need to change package line, but that's about it.
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name ="Tetris by 6547 Cobalt Colts", group = "Tetris")
+@Disabled
 public class Tetris extends LinearOpMode {
 
     //TODO : fix rotation function, then polish it (now gotta polish it)

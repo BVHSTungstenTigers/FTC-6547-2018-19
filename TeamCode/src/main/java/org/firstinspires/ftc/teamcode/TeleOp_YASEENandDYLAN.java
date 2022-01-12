@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 @TeleOp(name = "YASEEN and DYLAN Teleop 2019")
+@Disabled
 public class TeleOp_YASEENandDYLAN extends theColt {
 
     double speedModifer=.7;

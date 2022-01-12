@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * @see <a href="http://revrobotics.com">REV Robotics Web Page</a>
  */
 @TeleOp(name = "Sensor: MaxboticsDistance", group = "Sensor")
-
+@Disabled
 public class MaxboticsDistanceTest extends theColt {
 
     private AnalogInput sensorRangeMaxbotix;

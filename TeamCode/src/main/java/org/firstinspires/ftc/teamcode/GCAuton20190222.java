@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
  */
 
 @Autonomous(name = "GC Test 2019")
+@Disabled
 public class GCAuton20190222 extends theColt {
 
     ElapsedTime gametime = new ElapsedTime();

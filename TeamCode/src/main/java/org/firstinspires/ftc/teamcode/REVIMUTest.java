@@ -60,6 +60,7 @@ import java.util.Locale;
  */
 @TeleOp(name = "Rev Veliocty test", group = "Sensor")
 // Comment this out to add to the opmode list
+@Disabled
 public class REVIMUTest extends LinearOpMode
     {
     //----------------------------------------------------------------------------------------------

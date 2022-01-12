@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
  */
 
 @Autonomous(name = "dapat WORLDS V2")
+@Disabled
 public class RedDepatWorldsV2 extends theColt {
 
     @Override
