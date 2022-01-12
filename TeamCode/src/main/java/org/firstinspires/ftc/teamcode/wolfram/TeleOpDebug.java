@@ -24,15 +24,16 @@ public class TeleOpDebug extends CustomOpMode {
     public void init() {
         super.init();
 
-        getBot().getBlinkinLedDriver().setPattern(pattern);
-
         //Load sounds
         silverSound = getBot().getSoundFile("silver.wav");
         goldSound = getBot().getSoundFile("silver.wav");
 
         // Load oneshots
         // Start = change blinking pattern
-        registerOneShot(() -> gamepad1.start, () -> getBot().getBlinkinLedDriver().setPattern(pattern = pattern.next()));
+        if (getBot().getBlinkinLedDriver() != null) {
+            getBot().getBlinkinLedDriver().setPattern(pattern);
+            registerOneShot(() -> gamepad1.start, () -> getBot().getBlinkinLedDriver().setPattern(pattern = pattern.next()));
+        }
 
         // Left + Right trigger = silver and gold sounds
         if (silverSound.exists()) registerOneShot(() -> gamepad1.left_trigger >= 0.95f, () -> getBot().playSound(silverSound));

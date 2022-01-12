@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.wolfram;
 
 import android.os.Environment;
 
+import androidx.annotation.Nullable;
+
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -36,12 +38,14 @@ public class HardwareWolfram {
     private final DcMotor backLeftMotor; // backLeft
     private final DcMotor backRightMotor; // backRight
 
-    private final RevBlinkinLedDriver blinkinLedDriver; // lights
+    @Nullable
+    private final RevBlinkinLedDriver blinkinLedDriver; // lights, optional
 
-    private final AnalogInput limitSwitch; // inputSwitch
+    @Nullable
+    private final AnalogInput limitSwitch; // inputSwitch, optional
     private final float limitSwitchCutoff = 1.5f;
 
-    private final BNO055IMU imu;
+    private final BNO055IMU imu; // imu
     private Orientation angles;
     @Setter
     private double imuAngleOffset;
@@ -68,10 +72,10 @@ public class HardwareWolfram {
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Load lights
-        blinkinLedDriver = map.get(RevBlinkinLedDriver.class, "lights");
+        blinkinLedDriver = map.tryGet(RevBlinkinLedDriver.class, "lights");
 
         // Load limit switch
-        limitSwitch = map.get(AnalogInput.class, "limitSwitch");
+        limitSwitch = map.tryGet(AnalogInput.class, "limitSwitch");
 
         // Load the IMU
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -82,6 +86,9 @@ public class HardwareWolfram {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
         imu = map.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
         updateIMU();
@@ -100,8 +107,10 @@ public class HardwareWolfram {
     }
 
     public void dumpTelemetry(Telemetry telemetry) {
-        telemetry.addData("Limit Switch Voltage", "%,2fV", getLimitSwitch().getVoltage());
-        telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
+        if (getLimitSwitch() != null) {
+            telemetry.addData("Limit Switch Voltage", "%,2fV", getLimitSwitch().getVoltage());
+            telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
+        }
         telemetry.addData("Front Left Power", "%,2fV", getFrontLeftMotor().getPowerFloat());
         telemetry.addData("Front Right Power", "%,2fV", getFrontRightMotor().getPowerFloat());
         telemetry.addData("Back Left Power", "%,2fV", getBackLeftMotor().getPowerFloat());
