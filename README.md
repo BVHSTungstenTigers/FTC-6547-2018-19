@@ -1,3 +1,14 @@
+# Blue Valley Tungsten Tigers
+You've found our code repository. We're the Blue Valley Tungsten Tigers, unapologetically stealing code from other teams since 2021. Each of us should have our own github usernames (BVHSTungstenTigers is the shared account for the shared laptop), so we aren't really putting javadoc comments with our names on files. Files with javadoc comments can be blamed on other teams.
+
+In the event someone has to update this to future versions, here's what we've modified to port to current version:
+- Create a new project, and replace the FtcRobotController dir in this with the one from the new project
+- Replace all gradle files in the root dir and TeamCode with the ones from the new project
+- Add Project Lombok to TeamCode's build.gradle both as compileOnly and annotationProcessor
+- You may need to install the Project Lombok intellij/android studio plugin for full use
+
+# Default ReadMe Below
+
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
