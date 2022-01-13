@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -42,7 +44,7 @@ public class HardwareWolfram {
     private final DcMotor backRightMotor; // backRight
 
     // Claw
-    private final DcMotor clawMotor; // claw, optional
+    private final Servo clawServo; // claw, optional
     private final DcMotor armMotor; // arm, optional
 
     // Wheel
@@ -74,7 +76,7 @@ public class HardwareWolfram {
         backRightMotor = map.get(DcMotor.class, "backRight");
 
         // Load the claw, arm, and wheel motors
-        clawMotor = map.tryGet(DcMotor.class, "claw");
+        clawServo = map.tryGet(Servo.class, "claw");
         armMotor = map.tryGet(DcMotor.class, "arm");
         wheelMotor = map.tryGet(DcMotor.class, "wheel");
 
