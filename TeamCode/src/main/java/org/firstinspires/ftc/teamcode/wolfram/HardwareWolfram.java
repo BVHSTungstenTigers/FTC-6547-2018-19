@@ -43,7 +43,10 @@ public class HardwareWolfram {
 
     // Claw
     private final DcMotor clawMotor; // claw, optional
-    private final DcMotor armMotor; //arm, optional
+    private final DcMotor armMotor; // arm, optional
+
+    // Wheel
+    private final DcMotor wheelMotor; // wheel, optional
 
     // Other components
     @Nullable
@@ -70,9 +73,10 @@ public class HardwareWolfram {
         backLeftMotor = map.get(DcMotor.class, "backLeft");
         backRightMotor = map.get(DcMotor.class, "backRight");
 
-        // Load the claw motors
+        // Load the claw, arm, and wheel motors
         clawMotor = map.tryGet(DcMotor.class, "claw");
         armMotor = map.tryGet(DcMotor.class, "arm");
+        wheelMotor = map.tryGet(DcMotor.class, "wheel");
 
         // Make them stationary
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

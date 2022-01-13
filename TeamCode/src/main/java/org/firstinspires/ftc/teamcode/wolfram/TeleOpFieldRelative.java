@@ -80,6 +80,9 @@ public class TeleOpFieldRelative extends CustomOpMode {
         if (getBot().getArmMotor() != null) {
             getBot().getArmMotor().setPower(gamepad1.right_trigger * direction * speedModifier);
         }
+        if (getBot().getWheelMotor() != null) {
+            getBot().getWheelMotor().setPower((gamepad1.right_bumper ? 1 : 0) * direction * speedModifier);
+        }
 
         //
         // Telemetry
