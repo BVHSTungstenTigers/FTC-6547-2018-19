@@ -51,10 +51,6 @@ public class theColt extends LinearOpMode{
     final double armMaxEncoder=3850;
     double angleZzeroValue=0;
 
-    MiniPID armPID = new MiniPID(.30, 0.00, 0);
-
-    MiniPID slidePID = new MiniPID(.30, 0.00, 0);
-
     static double lastPosX=40;
     static double lastPosY=40;
 
@@ -70,7 +66,7 @@ public class theColt extends LinearOpMode{
     // Valid choices are:  BACK or FRONT
     static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+     * The variable we will use to store our instance of the Vuforia
      * localization engine.
      */
     VuforiaLocalizer vuforia;
@@ -89,8 +85,6 @@ public class theColt extends LinearOpMode{
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
     TFObjectDetector tfod;
-
-    final double ROBOT_FACING_LEFT=-20;
 
     final int GOLD_MINERAL_LEFT=0;
     final int GOLD_MINERAL_CENTER=1;
@@ -222,7 +216,7 @@ public class theColt extends LinearOpMode{
     public double readFile(String filename)
     {
         try {
-            double output=0;
+            double output;
             File file= AppUtil.getInstance().getSettingsFile(filename);
             output = Double.parseDouble(ReadWriteFile.readFile(file));
             //telemetry.log().add("read " + output + " in " + filename);
@@ -342,34 +336,7 @@ public class theColt extends LinearOpMode{
         while (Math.abs(RightFront.getCurrentPosition())<Math.abs(target) && opModeIsActive());
         stopRobot();
     }
-    void strafeLeftAndLowerArm(double power, int target,double armLoweredPercent, double armExtensionPercent)
-    {
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setTargetPosition((int) (armMaxEncoder*armLoweredPercent));
-        arm.setPower(1);
 
-        //MiniPID slidePID = new MiniPID(.10, 0.00, 0);
-        linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        linearSlide.setTargetPosition((int) (linearSlideMaxEncoder*armExtensionPercent));
-        linearSlide.setPower(1);
-        DriveLeft(power);
-        zeroEncoders();
-        while (opModeIsActive() && (arm.isBusy() || linearSlide.isBusy() || (Math.abs(RightFront.getCurrentPosition())<Math.abs(target))))
-        {
-            if (!arm.isBusy()) arm.setPower(0);
-            if (!linearSlide.isBusy()) linearSlide.setPower(0);
-            if (Math.abs(RightFront.getCurrentPosition())>Math.abs(target)) stopRobot();
-            telemetry.addData("ARM current Position", arm.getCurrentPosition());
-            telemetry.addData("ARM current Position %", getCurrentPercentArmLowered());
-            telemetry.addData("LINEAR SLIDE current Position", linearSlide.getCurrentPosition());
-            telemetry.addData("LINEAR SLIDE current Position %", getCurrentPercentArmExtended());
-            telemetry.update();
-        }
-        linearSlide.setPower(0);
-        arm.setPower(0);
-        stopRobot();
-
-    }
     void intake(double power)
     {
         intake.setPower(-power);
@@ -759,36 +726,7 @@ public class theColt extends LinearOpMode{
         }
         sleep(.5);
     }
-    // void driveIntoMineralCreator(double angleParrelToMinerals, int mineralLocation)
-    // {
-    //     if (tfod!=null)
-    //     {
-    //         tfod.shutdown();
-    //     }
-    //     if (goldMineralLocation!=GOLD_MINERAL_CENTER) TurnPID(0, 3);
-    //     if (goldMineralLocation==GOLD_MINERAL_RIGHT)
-    //     {
-    //         DriveToPointPID(24,40,2);
-    //         DriveToPointPID(30,40,2);
-    //         DriveToPointPID(63,3,4);
-    //     }
-    //     else if (goldMineralLocation==GOLD_MINERAL_LEFT)
-    //     {
-    //         DriveToPointPID(46,20, 1.5);
-    //         DriveToPointPID(41,20, 1.5);
-    //         DriveToPointPID(49,15, 1);
-    //         DriveToPointPID(63,3,2);
-    //     }
-    //     else if (goldMineralLocation==GOLD_MINERAL_CENTER)
-    //     {
-    //         DriveforLength(1, -.5);
-    //         DriveforLength(1, .5);
-    //         TurnPID(0,3);
-    //         DriveToPointPID(63,3,3.5);
-    //     }
-    //     sleep(.5);
-    // }
-    void strafeToDistanceXPID(double inch, double time) {strafeToDistanceXPID(inch,time,0);}
+
     void strafeToDistanceXPID(double inch, double time, double offset)
     {
         MiniPID miniPID = new MiniPID(.055, 0.000, 0.04);
@@ -956,35 +894,7 @@ public class theColt extends LinearOpMode{
         RightBack.setPower(power * Math.cos(angleInRadians-robotAngle) - rightX);
 
     }
-    public void oldTurn(double targetAngle, double motorPower, double leeway)
-    {
-        if (getIMUAngle()>targetAngle-1 && getIMUAngle()<targetAngle+1) return;
-        leeway=Math.abs(leeway); //make sure the leeway is positive
-        double angleDiference=targetAngle-getIMUAngle();
-        if (targetAngle>=180-leeway) targetAngle-=leeway;
-        else if (targetAngle<=-180+leeway) targetAngle+=leeway;
-        if (Math.abs(angleDiference)>180) //make the angle difference less then 180 to remove unnecessary turning
-        {
-            angleDiference+=(angleDiference>=0) ? -360 : 360;
-        }
-        if (angleDiference>0) motorPower*=-1; //turn right
-        turnLeft(motorPower);
-        boolean keepTurning=false;
-        if (angleDiference>0 && targetAngle<0 && getIMUAngle()>0) keepTurning=true;
-        else if (angleDiference<0 && targetAngle>0 && getIMUAngle()<0) keepTurning=true;
 
-        while ((keepTurning && opModeIsActive()) || (opModeIsActive() && (angleDiference>=0) ? getIMUAngle() <= targetAngle-leeway : getIMUAngle() >= targetAngle+leeway))
-        {
-            if (angleDiference>0 && targetAngle<0 && getIMUAngle()<0) keepTurning=false;
-            else if (angleDiference<0 && targetAngle>0 && getIMUAngle()>0) keepTurning=false;
-            telemetry.addData("IMU angle", getIMUAngle());
-            telemetry.addData("target angle",targetAngle);
-            telemetry.addData("angle difference", angleDiference);
-            telemetry.addData("leeway", leeway);
-            outputTelemetry();
-        }
-        stopRobot();
-    }
     public void setOffset(double RobotOffsetX, double RobotOffsetY)
     {
         offsetX=RobotOffsetX+constantOffsetX;
