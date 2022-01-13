@@ -5,6 +5,7 @@ import android.os.Environment;
 import androidx.annotation.Nullable;
 
 import com.qualcomm.ftccommon.SoundPlayer;
+import com.qualcomm.ftcrobotcontroller.BuildConfig;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -111,15 +112,21 @@ public class HardwareWolfram {
     }
 
     public void dumpTelemetry(Telemetry telemetry) {
+        // Versions
+        telemetry.addData("Version", BuildConfig.APP_BUILD_TIME);
+
         // Update the IMU data
         telemetry.addAction(this::updateIMU);
         telemetry.addData("IMU Angle", getIMUAngle());
         telemetry.addData("IMU Angle Offset", getImuAngleOffset());
 
+        // Limit switch
         if (getLimitSwitch() != null) {
             telemetry.addData("Limit Switch Voltage", getLimitSwitch().getVoltage());
             telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
         }
+
+        // Motors
         telemetry.addData("Front Left Power", getFrontLeftMotor().getPowerFloat());
         telemetry.addData("Front Right Power", getFrontRightMotor().getPowerFloat());
         telemetry.addData("Back Left Power", getBackLeftMotor().getPowerFloat());
