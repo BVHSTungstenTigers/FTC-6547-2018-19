@@ -27,10 +27,8 @@ public class TeleOpFieldRelative extends CustomOpMode {
         // Update the IMU and adjust Offset.
         if (gamepad1.start) { // Reset offset to power-on state
             getBot().setImuAngleOffset(0);
-        } else if (gamepad1.dpad) {
-            getBot().setImuAngleOffset(0);
-        } else if (gamepad1.left_bumper && gamepad1.right_bumper) {
-            getBot().setImuAngleOffset(-getBot().getImuAngleOffset());
+        } else if (gamepad1.back) {
+            getBot().setImuAngleOffset(-getBot().getIMUAngle());
         }
 
         // Left joystick translates to overall movement
