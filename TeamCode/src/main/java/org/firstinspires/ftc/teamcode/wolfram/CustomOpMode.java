@@ -27,6 +27,14 @@ public abstract class CustomOpMode extends OpMode {
         oneShots.add(new FunctionOneShot(supplier, runnable));
     }
 
+    protected void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     @Override
     public void loop() {
         oneShots.forEach(FunctionOneShot::run);

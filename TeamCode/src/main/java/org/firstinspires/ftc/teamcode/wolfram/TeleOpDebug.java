@@ -61,10 +61,6 @@ public class TeleOpDebug extends CustomOpMode {
         telemetry.update();
 
         // Wait 50ms to avoid to much insanity
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        sleep(50);
     }
 }
