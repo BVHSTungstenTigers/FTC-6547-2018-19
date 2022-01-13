@@ -74,8 +74,8 @@ public class TeleOpFieldRelative extends CustomOpMode {
         // Claw
         //
 
-        getBot().getClawMotor().setPower(gamepad1.left_trigger * speedModifier);
-        getBot().getArmMotor().setPower(gamepad1.right_trigger * speedModifier);
+        getBot().getClawMotor().setPower((gamepad1.left_trigger - gamepad1.right_trigger) * speedModifier);
+        getBot().getArmMotor().setPower(gamepad1.left_bumper ? 1 : (gamepad1.right_bumper ? -1 : 0) * speedModifier);
 
         //
         // Telemetry
