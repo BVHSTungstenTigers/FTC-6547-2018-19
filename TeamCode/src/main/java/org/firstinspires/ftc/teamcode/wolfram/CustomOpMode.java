@@ -12,7 +12,7 @@ public abstract class CustomOpMode extends OpMode {
     @Getter
     private HardwareWolfram bot;
 
-    private Collection<FunctionOneShot> oneShots = new ArrayList<>();
+    private final Collection<FunctionOneShot> oneShots = new ArrayList<>();
 
     @Override
     public void init() {

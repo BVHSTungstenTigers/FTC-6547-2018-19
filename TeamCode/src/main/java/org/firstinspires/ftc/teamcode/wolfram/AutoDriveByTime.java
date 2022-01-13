@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class AutoDriveByTime extends CustomOpMode {
     private static final double FORWARD_SPEED = 0.6;
     private static final double TURN_SPEED = 0.5;
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void start() {
