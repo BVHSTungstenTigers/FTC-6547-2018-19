@@ -9,11 +9,14 @@ public class FunctionOneShot implements Runnable {
     private final BooleanSupplier supplier;
     private final Runnable runnable;
 
-    private boolean state;
+    private boolean pastValue;
 
     @Override
     public void run() {
-        if (supplier.getAsBoolean() != state) state = !state;
-        if (!state) runnable.run();
+        boolean currentValue = supplier.getAsBoolean();
+        if (currentValue != pastValue) {
+            if (currentValue) runnable.run();
+            pastValue = currentValue;
+        }
     }
 }

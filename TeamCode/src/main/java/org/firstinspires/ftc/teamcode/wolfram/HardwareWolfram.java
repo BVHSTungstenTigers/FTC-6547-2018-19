@@ -67,9 +67,11 @@ public class HardwareWolfram {
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        // Invert the left
+        // Invert needed motors
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Load lights
         blinkinLedDriver = map.tryGet(RevBlinkinLedDriver.class, "lights");
@@ -103,18 +105,24 @@ public class HardwareWolfram {
     }
 
     public boolean isLimitSwitchTriggered() {
+        assert limitSwitch != null;
         return limitSwitch.getVoltage() >= getLimitSwitchCutoff();
     }
 
     public void dumpTelemetry(Telemetry telemetry) {
+        // Update the IMU data
+        telemetry.addAction(this::updateIMU);
+        telemetry.addData("IMU Angle", getIMUAngle());
+        telemetry.addData("IMU Angle Offset", getImuAngleOffset());
+
         if (getLimitSwitch() != null) {
-            telemetry.addData("Limit Switch Voltage", "%,2fV", getLimitSwitch().getVoltage());
+            telemetry.addData("Limit Switch Voltage", getLimitSwitch().getVoltage());
             telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
         }
-        telemetry.addData("Front Left Power", "%,2fV", getFrontLeftMotor().getPowerFloat());
-        telemetry.addData("Front Right Power", "%,2fV", getFrontRightMotor().getPowerFloat());
-        telemetry.addData("Back Left Power", "%,2fV", getBackLeftMotor().getPowerFloat());
-        telemetry.addData("Back Right Power", "%,2fV", getBackRightMotor().getPowerFloat());
+        telemetry.addData("Front Left Power", getFrontLeftMotor().getPowerFloat());
+        telemetry.addData("Front Right Power", getFrontRightMotor().getPowerFloat());
+        telemetry.addData("Back Left Power", getBackLeftMotor().getPowerFloat());
+        telemetry.addData("Back Right Power", getBackRightMotor().getPowerFloat());
         telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
     }
 

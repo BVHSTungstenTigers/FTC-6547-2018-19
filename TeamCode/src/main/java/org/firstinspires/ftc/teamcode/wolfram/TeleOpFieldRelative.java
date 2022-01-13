@@ -19,7 +19,6 @@ public class TeleOpFieldRelative extends CustomOpMode {
         super.loop();
 
         // Update the IMU and adjust Offset
-        getBot().updateIMU();
         if (gamepad1.right_trigger >= .7 && gamepad1.left_trigger >= .7) {
             getBot().setImuAngleOffset(-22.5);
         }
