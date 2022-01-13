@@ -24,6 +24,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.io.File;
+import java.util.EnumSet;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -36,6 +38,7 @@ import lombok.Setter;
 @Getter
 public class HardwareWolfram {
     private final HardwareMap map;
+    private final Set<TelemetryFlag> telemetryFlags = EnumSet.allOf(TelemetryFlag.class);
 
     // Chasis motors
     private final DcMotor frontLeftMotor; // frontLeft
@@ -133,22 +136,36 @@ public class HardwareWolfram {
         // Versions
         telemetry.addData("Version", BuildConfig.APP_BUILD_TIME);
 
-        telemetry.addData("IMU Angle", getIMUAngle());
-        telemetry.addData("IMU Angle Offset", getImuAngleOffset());
+        if (getTelemetryFlags().contains(TelemetryFlag.IMU)) {
+            telemetry.addData("IMU Angle", getIMUAngle());
+            telemetry.addData("IMU Angle Offset", getImuAngleOffset());
+        }
 
         // Limit switch
-        if (getLimitSwitch() != null) {
+        if (getTelemetryFlags().contains(TelemetryFlag.LIMIT_SWITCH) && getLimitSwitch() != null) {
             telemetry.addData("Limit Switch Voltage", getLimitSwitch().getVoltage());
             telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
         }
 
         // Motors
-        telemetry.addData("Front Left Power", getFrontLeftMotor().getPower());
-        telemetry.addData("Front Right Power", getFrontRightMotor().getPower());
-        telemetry.addData("Back Left Power", getBackLeftMotor().getPower());
-        telemetry.addData("Back Right Power", getBackRightMotor().getPower());
+        if (getTelemetryFlags().contains(TelemetryFlag.CHASIS)) {
+            telemetry.addData("Front Left Power", getFrontLeftMotor().getPower());
+            telemetry.addData("Front Right Power", getFrontRightMotor().getPower());
+            telemetry.addData("Back Left Power", getBackLeftMotor().getPower());
+            telemetry.addData("Back Right Power", getBackRightMotor().getPower());
+        }
 
-        telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
+        if (getTelemetryFlags().contains(TelemetryFlag.WHEEL)) {
+            telemetry.addData("Wheel Power", getWheelMotor().getPower());
+        }
+
+        if (getTelemetryFlags().contains(TelemetryFlag.ARM)) {
+            telemetry.addData("Arm Power", getArmMotor().getPower());
+        }
+
+        if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
+            telemetry.addData("Claw Position", getClawServo().getPosition());
+        }
     }
 
     public void updateIMU() {
