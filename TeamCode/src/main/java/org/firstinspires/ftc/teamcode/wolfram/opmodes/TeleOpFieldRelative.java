@@ -1,6 +1,8 @@
-package org.firstinspires.ftc.teamcode.wolfram;
+package org.firstinspires.ftc.teamcode.wolfram.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
 @TeleOp(name = "Field-Relative (?) Controller")
 public class TeleOpFieldRelative extends CustomOpMode {

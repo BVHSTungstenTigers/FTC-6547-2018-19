@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.wolfram;
+package org.firstinspires.ftc.teamcode.wolfram.opmodes;
 
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 import org.firstinspires.ftc.teamcode.wolfram.HardwareWolfram;
 
 import java.io.File;
