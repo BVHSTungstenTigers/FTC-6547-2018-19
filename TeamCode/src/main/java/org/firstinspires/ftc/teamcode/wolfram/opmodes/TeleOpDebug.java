@@ -40,6 +40,11 @@ public class TeleOpDebug extends CustomOpMode {
         if (silverSound.exists()) registerOneShot(() -> gamepad1.left_trigger >= 0.95f, () -> getBot().playSound(silverSound));
         if (goldSound.exists()) registerOneShot(() -> gamepad1.right_trigger >= 0.95f, () -> getBot().playSound(goldSound));
 
+        if (getBot().getArmMotor() != null) {
+            getBot().getArmMotor().setTargetPosition(getBot().getArmMotor().getCurrentPosition());
+            getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
         // Report
         telemetry.addData("Silver Exists", silverSound.exists());
         telemetry.addData("Gold Exists", goldSound.exists());
@@ -56,6 +61,13 @@ public class TeleOpDebug extends CustomOpMode {
         getBot().getFrontRightMotor().setPower(gamepad1.b ? debugMotorSpeed : 0);
         getBot().getBackLeftMotor().setPower(gamepad1.x ? debugMotorSpeed : 0);
         getBot().getBackRightMotor().setPower(gamepad1.y ? debugMotorSpeed : 0);
+
+        if (getBot().getArmMotor() != null) {
+            getBot().getArmMotor().setTargetPosition((int) (gamepad1.left_trigger * getBot().getMaxArmPosition()));
+        }
+        if (getBot().getWheelMotor() != null) {
+            getBot().getWheelMotor().setPower(gamepad1.right_trigger * debugMotorSpeed);
+        }
 
         // Add telemetry for limit switch and LED
         getBot().dumpTelemetry(telemetry);

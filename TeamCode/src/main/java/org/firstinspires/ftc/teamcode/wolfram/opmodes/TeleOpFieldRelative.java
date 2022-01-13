@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.wolfram.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
@@ -8,12 +9,16 @@ import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 public class TeleOpFieldRelative extends CustomOpMode {
     private boolean fieldRelative;
     private double speedModifier = 0.7;
+    private int targetPosition;
 
     @Override
     public void init() {
         super.init();
 
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
+        targetPosition = getBot().getArmMotor().getCurrentPosition();
+        getBot().getArmMotor().setTargetPosition(targetPosition);
+        getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     @Override
@@ -74,16 +79,19 @@ public class TeleOpFieldRelative extends CustomOpMode {
         // Claw
         //
 
-        int direction = gamepad1.left_bumper ? 1 : -1;
 
         if (getBot().getClawServo() != null) {
-            getBot().getClawServo().setPosition(gamepad1.left_trigger);
+            getBot().getClawServo().setPosition(gamepad2.left_trigger);
         }
         if (getBot().getArmMotor() != null) {
-            getBot().getArmMotor().setPower(gamepad1.right_trigger * direction * speedModifier);
+            if (gamepad2.dpad_up) targetPosition += 5;
+            if (gamepad2.dpad_down) targetPosition -= 5;
+            targetPosition = Math.max(getBot().getMinArmPosition(), Math.min(getBot().getMaxArmPosition(), targetPosition));
+            getBot().getArmMotor().setTargetPosition(targetPosition);
+            getBot().getArmMotor().setPower(.25);
         }
         if (getBot().getWheelMotor() != null) {
-            getBot().getWheelMotor().setPower((gamepad1.right_bumper ? 1 : 0) * direction * speedModifier);
+            getBot().getWheelMotor().setPower((gamepad2.right_bumper ? 1 : (gamepad2.left_bumper ? -1 : 0)) * speedModifier);
         }
 
         //

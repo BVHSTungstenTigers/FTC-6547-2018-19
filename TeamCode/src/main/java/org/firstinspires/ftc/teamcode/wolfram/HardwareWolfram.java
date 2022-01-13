@@ -11,6 +11,8 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -48,7 +50,9 @@ public class HardwareWolfram {
 
     // Claw
     private final Servo clawServo; // claw, optional
-    private final DcMotor armMotor; // arm, optional
+    private final DcMotorEx armMotor; // arm, optional
+    private final int maxArmPosition = 285; // START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND
+    private final int minArmPosition = 0;
 
     // Wheel
     private final DcMotor wheelMotor; // wheel, optional
@@ -80,8 +84,12 @@ public class HardwareWolfram {
 
         // Load the claw, arm, and wheel motors
         clawServo = map.tryGet(Servo.class, "claw");
-        armMotor = map.tryGet(DcMotor.class, "arm");
+        armMotor = map.tryGet(DcMotorEx.class, "arm");
         wheelMotor = map.tryGet(DcMotor.class, "wheel");
+
+        if (clawServo != null) {
+            clawServo.scaleRange(0.3, 0.5);
+        }
 
         // Make them stationary
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -138,7 +146,8 @@ public class HardwareWolfram {
 
         if (getTelemetryFlags().contains(TelemetryFlag.IMU)) {
             telemetry.addData("IMU Angle", getIMUAngle());
-            telemetry.addData("IMU Angle Offset", getImuAngleOffset());
+            telemetry.addData(
+                     "IMU Angle Offset", getImuAngleOffset());
         }
 
         // Limit switch
@@ -161,6 +170,8 @@ public class HardwareWolfram {
 
         if (getTelemetryFlags().contains(TelemetryFlag.ARM)) {
             telemetry.addData("Arm Power", getArmMotor().getPower());
+            telemetry.addData("Arm Position", getArmMotor().getCurrentPosition());
+            telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
