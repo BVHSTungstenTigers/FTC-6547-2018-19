@@ -34,11 +34,17 @@ import lombok.Setter;
 public class HardwareWolfram {
     private final HardwareMap map;
 
+    // Chasis motors
     private final DcMotor frontLeftMotor; // frontLeft
     private final DcMotor frontRightMotor; // frontRight
     private final DcMotor backLeftMotor; // backLeft
     private final DcMotor backRightMotor; // backRight
 
+    // Claw
+    private final DcMotor clawMotor; // claw, optional
+    private final DcMotor armMotor; //arm, optional
+
+    // Other components
     @Nullable
     private final RevBlinkinLedDriver blinkinLedDriver; // lights, optional
 
@@ -46,6 +52,7 @@ public class HardwareWolfram {
     private final AnalogInput limitSwitch; // inputSwitch, optional
     private final float limitSwitchCutoff = 1.5f;
 
+    // IMU
     private final BNO055IMU imu; // imu
     private Orientation angles;
     @Setter
@@ -56,11 +63,15 @@ public class HardwareWolfram {
     public HardwareWolfram(@NonNull HardwareMap map) {
         this.map = map;
 
-        // Load the motors
+        // Load chasis the motors
         frontLeftMotor = map.get(DcMotor.class, "frontLeft");
         frontRightMotor = map.get(DcMotor.class, "frontRight");
         backLeftMotor = map.get(DcMotor.class, "backLeft");
         backRightMotor = map.get(DcMotor.class, "backRight");
+
+        // Load the claw motors
+        clawMotor = map.get(DcMotor.class, "claw");
+        armMotor = map.get(DcMotor.class, "arm");
 
         // Make them stationary
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

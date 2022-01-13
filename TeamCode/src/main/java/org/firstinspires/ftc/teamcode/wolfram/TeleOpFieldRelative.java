@@ -24,6 +24,10 @@ public class TeleOpFieldRelative extends CustomOpMode {
         else if (gamepad1.x) speedModifier = 0.1;
         else if (gamepad1.y) speedModifier = 1;
 
+        //
+        // DRIVING
+        //
+
         // Update the IMU and adjust Offset.
         if (gamepad1.start) { // Reset offset to power-on state
             getBot().setImuAngleOffset(0);
@@ -66,7 +70,17 @@ public class TeleOpFieldRelative extends CustomOpMode {
         getBot().getFrontRightMotor().setPower((r * Math.sin(joystickAngle) - rightX) * speedModifier);
         getBot().getBackRightMotor().setPower((r * Math.cos(joystickAngle) - rightX) * speedModifier);
 
+        //
+        // Claw
+        //
+
+        getBot().getClawMotor().setPower(gamepad1.left_trigger * speedModifier);
+        getBot().getArmMotor().setPower(gamepad1.right_trigger * speedModifier);
+
+        //
         // Telemetry
+        //
+
         getBot().dumpTelemetry(telemetry);
         telemetry.addData("Field Relative", fieldRelative);
         telemetry.update();
