@@ -20,8 +20,7 @@ public class TeleOpFieldRelative extends CustomOpMode {
 
         // Set the speed modifier
         if (gamepad1.a) speedModifier = 0.1;
-        else if (gamepad1.b) speedModifier = 0.3;
-        else if (gamepad1.x) speedModifier = 0.6;
+        else if (gamepad1.b) speedModifier = 0.5;
         else if (gamepad1.y) speedModifier = 1;
 
         //
