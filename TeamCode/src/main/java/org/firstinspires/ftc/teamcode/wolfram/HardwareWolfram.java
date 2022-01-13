@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -70,8 +71,8 @@ public class HardwareWolfram {
         backRightMotor = map.get(DcMotor.class, "backRight");
 
         // Load the claw motors
-        clawMotor = map.get(DcMotor.class, "claw");
-        armMotor = map.get(DcMotor.class, "arm");
+        clawMotor = map.tryGet(DcMotor.class, "claw");
+        armMotor = map.tryGet(DcMotor.class, "arm");
 
         // Make them stationary
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -99,7 +100,7 @@ public class HardwareWolfram {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         // parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        parameters.mode = BNO055IMU.SensorMode.GYRONLY;
+        parameters.mode = BNO055IMU.SensorMode.IMU;
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
@@ -126,8 +127,6 @@ public class HardwareWolfram {
         // Versions
         telemetry.addData("Version", BuildConfig.APP_BUILD_TIME);
 
-        // Update the IMU data
-        telemetry.addAction(this::updateIMU);
         telemetry.addData("IMU Angle", getIMUAngle());
         telemetry.addData("IMU Angle Offset", getImuAngleOffset());
 
@@ -138,10 +137,11 @@ public class HardwareWolfram {
         }
 
         // Motors
-        telemetry.addData("Front Left Power", getFrontLeftMotor().getPowerFloat());
-        telemetry.addData("Front Right Power", getFrontRightMotor().getPowerFloat());
-        telemetry.addData("Back Left Power", getBackLeftMotor().getPowerFloat());
-        telemetry.addData("Back Right Power", getBackRightMotor().getPowerFloat());
+        telemetry.addData("Front Left Power", getFrontLeftMotor().getPower());
+        telemetry.addData("Front Right Power", getFrontRightMotor().getPower());
+        telemetry.addData("Back Left Power", getBackLeftMotor().getPower());
+        telemetry.addData("Back Right Power", getBackRightMotor().getPower());
+
         telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
     }
 
@@ -151,6 +151,6 @@ public class HardwareWolfram {
 
     public double getIMUAngle() {
         double currentAngle = (angles.firstAngle + imuAngleOffset + 360) % 360;
-        return currentAngle > 180 ? 180 - currentAngle : currentAngle;
+        return currentAngle > 180 ?  currentAngle - 360 : currentAngle;
     }
 }

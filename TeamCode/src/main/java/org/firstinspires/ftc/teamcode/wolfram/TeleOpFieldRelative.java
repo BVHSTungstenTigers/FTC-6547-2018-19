@@ -40,7 +40,7 @@ public class TeleOpFieldRelative extends CustomOpMode {
 
         // Combine the arrow keys and joystick
         double x = gamepad1.left_stick_x;
-        double y = gamepad1.left_stick_y;
+        double y = -gamepad1.left_stick_y;
 
         // Down and right take priority if the dpad's broken
         if (gamepad1.dpad_down) y = -1;
@@ -61,7 +61,7 @@ public class TeleOpFieldRelative extends CustomOpMode {
         double joystickAngle = Math.atan2(y, x) - Math.PI / 4;
         double rightX = gamepad1.right_stick_x;
 
-        if (fieldRelative) joystickAngle -= getBot().getIMUAngle();
+        if (fieldRelative) joystickAngle -= Math.toRadians(getBot().getIMUAngle());
 
         // Set the motor powers
         getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX) * speedModifier);
@@ -73,12 +73,18 @@ public class TeleOpFieldRelative extends CustomOpMode {
         // Claw
         //
 
-        getBot().getClawMotor().setPower((gamepad1.left_trigger - gamepad1.right_trigger) * speedModifier);
-        getBot().getArmMotor().setPower(gamepad1.left_bumper ? 1 : (gamepad1.right_bumper ? -1 : 0) * speedModifier);
+        if (getBot().getClawMotor() != null) {
+            getBot().getClawMotor().setPower((gamepad1.left_trigger - gamepad1.right_trigger) * speedModifier);
+        }
+        if (getBot().getArmMotor() != null) {
+            getBot().getArmMotor().setPower(gamepad1.left_bumper ? 1 : (gamepad1.right_bumper ? -1 : 0) * speedModifier);
+        }
 
         //
         // Telemetry
         //
+
+        sleep(50);
 
         getBot().dumpTelemetry(telemetry);
         telemetry.addData("Field Relative", fieldRelative);
