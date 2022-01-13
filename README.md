@@ -7,6 +7,7 @@ In the event someone has to update this to future versions, here's what we've mo
 - Add Project Lombok to TeamCode's build.gradle both as compileOnly and annotationProcessor
 - You may need to install the Project Lombok intellij/android studio plugin for full use
 
+Oh, you need to connect to the bot. Connect to the bot's wifi, and in the Terminal tab at the bottom-left of the Android Studio window, run `adb connect 192.168.43.1`. If you turn the bot off and on again, or switch wifi, run `adb kill-server` to be safe before reconnecting.
 # Default ReadMe Below
 
 ## Welcome!
