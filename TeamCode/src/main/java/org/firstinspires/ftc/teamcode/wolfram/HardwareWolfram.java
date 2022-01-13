@@ -86,7 +86,8 @@ public class HardwareWolfram {
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode TODO Where is this file and is there a default?
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        // parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        parameters.mode = BNO055IMU.SensorMode.GYRONLY;
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
