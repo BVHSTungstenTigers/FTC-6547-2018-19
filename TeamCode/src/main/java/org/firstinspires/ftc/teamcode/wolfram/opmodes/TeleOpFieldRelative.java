@@ -2,37 +2,44 @@ package org.firstinspires.ftc.teamcode.wolfram.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
 @TeleOp(name = "Field-Relative (?) Controller")
 public class TeleOpFieldRelative extends CustomOpMode {
     private boolean fieldRelative;
-    private double speedModifier = 0.7;
-    private int targetPosition;
 
     @Override
     public void init() {
         super.init();
 
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
-        registerOneShot(() -> gamepad1.a, () -> speedModifier = 0.25);
-        registerOneShot(() -> gamepad1.b, () -> speedModifier = 0.5);
-        registerOneShot(() -> gamepad1.y, () -> speedModifier = 1);
 
         registerOneShot(() -> gamepad2.a, () -> getBot().getClawServo().setPosition(1));
         registerOneShot(() -> gamepad2.b, () -> getBot().getClawServo().setPosition(0));
         registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setTargetPosition(getBot().getMaxArmPosition()));
         registerOneShot(() -> gamepad2.y, () -> getBot().getArmMotor().setTargetPosition(getBot().getMinArmPosition()));
 
-        targetPosition = getBot().getArmMotor().getCurrentPosition();
-        getBot().getArmMotor().setTargetPosition(targetPosition);
-        getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // Setup PID bs
+        if (getBot().getArmMotor() != null) {
+            getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
+            getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
+
+            getBot().getArmMotor().setTargetPosition(getBot().getArmMotor().getCurrentPosition());
+            getBot().getArmMotor().setPower(0.25);
+        }
     }
 
     @Override
     public void loop() {
         super.loop();
+
+        // Left + right bumper = sneak + spring buttons.
+        // Hold them down
+        double speedModifierA = gamepad1.left_bumper ? 0.3 : (gamepad1.right_bumper ? 1 : 0.7);
+        double speedModifierB = gamepad2.left_bumper ? 0.3 : (gamepad2.right_bumper ? 1 : 0.7);
 
         //
         // DRIVING
@@ -74,32 +81,33 @@ public class TeleOpFieldRelative extends CustomOpMode {
         if (fieldRelative) joystickAngle -= Math.toRadians(getBot().getIMUAngle());
 
         // Set the motor powers
-        getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX) * speedModifier);
-        getBot().getBackLeftMotor().setPower((r * Math.sin(joystickAngle) + rightX) * speedModifier);
-        getBot().getFrontRightMotor().setPower((r * Math.sin(joystickAngle) - rightX) * speedModifier);
-        getBot().getBackRightMotor().setPower((r * Math.cos(joystickAngle) - rightX) * speedModifier);
+        getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX) * speedModifierA);
+        getBot().getBackLeftMotor().setPower((r * Math.sin(joystickAngle) + rightX) * speedModifierA);
+        getBot().getFrontRightMotor().setPower((r * Math.sin(joystickAngle) - rightX) * speedModifierA);
+        getBot().getBackRightMotor().setPower((r * Math.cos(joystickAngle) - rightX) * speedModifierA);
 
         //
         // Claw
         //
 
         // Servo
+        // Removed to promote only manual control with A/B
+        /*
         if (getBot().getClawServo() != null && gamepad2.left_trigger > 0.1) { // Don't trigger if a button control has been done to override this
             getBot().getClawServo().setPosition(gamepad2.left_trigger);
         }
+         */
 
         // Arm Manual
-        if (getBot().getArmMotor() != null) {
-            if (gamepad2.dpad_up) targetPosition += 5;
-            if (gamepad2.dpad_down) targetPosition -= 5;
-            targetPosition = Math.max(getBot().getMinArmPosition(), Math.min(getBot().getMaxArmPosition(), targetPosition));
-            getBot().getArmMotor().setTargetPosition(targetPosition);
-            getBot().getArmMotor().setPower(.25);
+        if (getBot().getArmMotor() != null && gamepad2.left_stick_button) {
+            float range = getBot().getMaxArmPosition() - getBot().getMinArmPosition();
+            double trigger = gamepad2.left_stick_y / 2 + 0.5;
+            getBot().getArmMotor().setTargetPosition((int) ((range) * trigger + getBot().getMinArmPosition()));
         }
 
         // Wheel
         if (getBot().getWheelMotor() != null) {
-            getBot().getWheelMotor().setPower((gamepad2.right_bumper ? 1 : (gamepad2.left_bumper ? -1 : 0)) * speedModifier);
+            getBot().getWheelMotor().setPower(gamepad2.right_stick_x * speedModifierB);
         }
 
         //

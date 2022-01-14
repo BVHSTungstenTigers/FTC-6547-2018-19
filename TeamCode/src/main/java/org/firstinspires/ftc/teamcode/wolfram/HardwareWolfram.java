@@ -60,6 +60,7 @@ public class HardwareWolfram {
     private final DcMotorEx armMotor; // arm, optional
     private final int maxArmPosition = 285; // START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND
     private final int minArmPosition = 0;
+    private final double armPidValue = 25;
 
     // Wheel
     private final DcMotor wheelMotor; // wheel, optional
@@ -101,15 +102,6 @@ public class HardwareWolfram {
 
         if (clawServo != null) {
             clawServo.scaleRange(0.3, 0.5); // tested experimentally
-        }
-
-        // https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#!
-        // see the AutoArmPIDCalibrate
-        // otherwise you'll suck.
-        if (armMotor != null) {
-            armMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, getPIDF("arm"));
-            armMotor.setPositionPIDFCoefficients(5.0);
-            // TODO PID Here
         }
 
         // Make them stationary
@@ -193,29 +185,14 @@ public class HardwareWolfram {
             telemetry.addData("Arm Power", getArmMotor().getPower());
             telemetry.addData("Arm Position", getArmMotor().getCurrentPosition());
             telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
+            telemetry.addData("Arm PID Using Encoder", getArmMotor().getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER).toString());
+            telemetry.addData("Arm PID To Position", getArmMotor().getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).toString());
+            telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
             telemetry.addData("Claw Position", getClawServo().getPosition());
         }
-    }
-
-    public void writePIDF(String fileName, PIDFCoefficients coefficients) {
-        File file = new File(fileName);
-
-        // write the pidf to a file
-        ReadWriteFile.writeFile(file, coefficients.p + ";" + coefficients.i + ";" + coefficients.d + ";" + coefficients.f);
-    }
-
-    public PIDFCoefficients getPIDF(String fileName) {
-        String string = ReadWriteFile.readFile(new File(pidfDir, fileName));
-
-        // if it doesnt exist return blank
-        if (string.isEmpty()) return new PIDFCoefficients();
-
-        // should be PIDF in that order
-        Iterator<Double> parts = Arrays.stream(string.split(";")).mapToDouble(Double::parseDouble).iterator();
-        return new PIDFCoefficients(parts.next(), parts.next(), parts.next(), parts.next());
     }
 
     public void updateIMU() {
