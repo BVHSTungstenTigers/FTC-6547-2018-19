@@ -45,8 +45,6 @@ public class TeleOpDebug extends CustomOpMode {
             getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 
-        if (getBot().getClawServo() != null) getBot().getClawServo().scaleRange(0, 1);
-
         // Report
         telemetry.addData("Silver Exists", silverSound.exists());
         telemetry.addData("Gold Exists", goldSound.exists());
