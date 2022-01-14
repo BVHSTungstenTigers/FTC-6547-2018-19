@@ -17,7 +17,7 @@ public class AutoDriveForwards extends CustomOpMode {
         getBot().getBackLeftMotor().setPower(FORWARD_SPEED);
         getBot().getBackRightMotor().setPower(FORWARD_SPEED);
 
-        sleep(3000);
+        sleep(1000);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
