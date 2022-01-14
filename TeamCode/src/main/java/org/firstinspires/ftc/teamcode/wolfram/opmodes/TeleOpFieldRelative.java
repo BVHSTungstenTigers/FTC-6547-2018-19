@@ -58,7 +58,7 @@ public class TeleOpFieldRelative extends CustomOpMode {
         if (gamepad1.dpad_right) x = 1;
         else if (gamepad1.dpad_left) x = -1;
 
-        // If any over 1, don't go over 1
+        // If any over 1, don't go over 1- arm motor limits
         double max = Math.max(x, y);
         if (max > 1) {
             x /= max;
