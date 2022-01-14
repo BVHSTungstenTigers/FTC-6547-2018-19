@@ -14,7 +14,7 @@ public abstract class CustomOpMode extends OpMode {
     private HardwareWolfram bot;
 
     private long totalLoops = 0;
-    private ElapsedTime time = new ElapsedTime();
+    private final ElapsedTime time = new ElapsedTime();
 
     private final Collection<FunctionOneShot> oneShots = new ArrayList<>();
 
