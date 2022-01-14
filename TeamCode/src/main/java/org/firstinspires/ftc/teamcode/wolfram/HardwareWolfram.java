@@ -15,8 +15,10 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -26,7 +28,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import lombok.Getter;
@@ -71,10 +78,15 @@ public class HardwareWolfram {
     @Setter
     private double imuAngleOffset;
 
-    private final File soundDir = new File(Environment.getExternalStorageDirectory(), "/FIRST/blocks/sound");
+    private final File soundDir = new File(Environment.getExternalStorageDirectory(), "/sound");
+    private final File pidfDir = new File(Environment.getExternalStorageDirectory(), "PID");
 
     public HardwareWolfram(@NonNull HardwareMap map) {
         this.map = map;
+
+        // Make sure dirs exist
+        if (!soundDir.exists()) soundDir.mkdirs();
+        if (!pidfDir.exists()) pidfDir.mkdirs();
 
         // Load chasis the motors
         frontLeftMotor = map.get(DcMotor.class, "frontLeft");
@@ -88,9 +100,15 @@ public class HardwareWolfram {
         wheelMotor = map.tryGet(DcMotor.class, "wheel");
 
         if (clawServo != null) {
-            clawServo.scaleRange(0.3, 0.5);
+            clawServo.scaleRange(0.3, 0.5); // tested experimentally
         }
+
+        // https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#!
+        // see the AutoArmPIDCalibrate
+        // otherwise you'll suck.
         if (armMotor != null) {
+            armMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, getPIDF("arm"));
+            armMotor.setPositionPIDFCoefficients(5.0);
             // TODO PID Here
         }
 
@@ -180,6 +198,24 @@ public class HardwareWolfram {
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
             telemetry.addData("Claw Position", getClawServo().getPosition());
         }
+    }
+
+    public void writePIDF(String fileName, PIDFCoefficients coefficients) {
+        File file = new File(fileName);
+
+        // write the pidf to a file
+        ReadWriteFile.writeFile(file, coefficients.p + ";" + coefficients.i + ";" + coefficients.d + ";" + coefficients.f);
+    }
+
+    public PIDFCoefficients getPIDF(String fileName) {
+        String string = ReadWriteFile.readFile(new File(pidfDir, fileName));
+
+        // if it doesnt exist return blank
+        if (string.isEmpty()) return new PIDFCoefficients();
+
+        // should be PIDF in that order
+        Iterator<Double> parts = Arrays.stream(string.split(";")).mapToDouble(Double::parseDouble).iterator();
+        return new PIDFCoefficients(parts.next(), parts.next(), parts.next(), parts.next());
     }
 
     public void updateIMU() {
