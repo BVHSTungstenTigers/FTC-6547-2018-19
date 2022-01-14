@@ -40,7 +40,7 @@ import lombok.Setter;
 @Getter
 public class HardwareWolfram {
     private final HardwareMap map;
-    private final Set<TelemetryFlag> telemetryFlags = EnumSet.allOf(TelemetryFlag.class);
+    private final Set<TelemetryFlag> telemetryFlags = EnumSet.allOf(TelemetryFlag.class); // Change to empty set to reduce lag
 
     // Chasis motors
     private final DcMotor frontLeftMotor; // frontLeft
