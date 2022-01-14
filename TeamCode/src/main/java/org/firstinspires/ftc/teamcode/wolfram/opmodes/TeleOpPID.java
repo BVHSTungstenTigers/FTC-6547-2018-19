@@ -6,9 +6,10 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
-@TeleOp(name = "Field-Relative (?) Controller")
-public class TeleOpFieldRelative extends CustomOpMode {
+@TeleOp(name = "Field-Relative PID-Arm")
+public class TeleOpPID extends CustomOpMode {
     private boolean fieldRelative;
+    private double targetPosition;
 
     @Override
     public void init() {
@@ -23,13 +24,14 @@ public class TeleOpFieldRelative extends CustomOpMode {
 
         // Setup PID bs
         if (getBot().getArmMotor() != null) {
-            getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
             // Unknown
             // PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
             // getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
+            targetPosition = getBot().getArmMotor().getCurrentPosition();
+            getBot().getArmMotor().setTargetPosition((int) targetPosition);
+            getBot().getArmMotor().setPower(1);
 
-            getBot().getArmMotor().setTargetPosition(getBot().getArmMotor().getCurrentPosition());
-            getBot().getArmMotor().setPower(0.25);
+            getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
 
@@ -100,10 +102,13 @@ public class TeleOpFieldRelative extends CustomOpMode {
          */
 
         // Arm Manual
-        if (getBot().getArmMotor() != null && gamepad2.left_stick_button) {
-            float range = getBot().getMaxArmPosition() - getBot().getMinArmPosition();
-            double trigger = gamepad2.left_stick_y / 2 + 0.5;
-            getBot().getArmMotor().setTargetPosition((int) ((range) * trigger + getBot().getMinArmPosition()));
+        if (getBot().getArmMotor() != null) {
+            targetPosition += gamepad2.left_stick_y * 5;
+
+            if (targetPosition > getBot().getMaxArmPosition()) targetPosition = getBot().getMaxArmPosition();
+            if (targetPosition < getBot().getMinArmPosition()) targetPosition = getBot().getMinArmPosition();
+
+            getBot().getArmMotor().setTargetPosition((int) targetPosition);
         }
 
         // Wheel
