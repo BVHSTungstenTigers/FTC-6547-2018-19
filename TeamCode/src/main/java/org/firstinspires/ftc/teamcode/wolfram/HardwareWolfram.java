@@ -60,7 +60,6 @@ public class HardwareWolfram {
     private final DcMotorEx armMotor; // arm, optional
     private final int maxArmPosition = 285; // START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND
     private final int minArmPosition = 0;
-    private final double armPidValue = 25;
 
     // Wheel
     private final DcMotor wheelMotor; // wheel, optional

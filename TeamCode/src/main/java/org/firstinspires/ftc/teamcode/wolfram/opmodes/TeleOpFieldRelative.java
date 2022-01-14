@@ -24,8 +24,9 @@ public class TeleOpFieldRelative extends CustomOpMode {
         // Setup PID bs
         if (getBot().getArmMotor() != null) {
             getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
-            getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
+            // Unknown
+            // PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
+            // getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
 
             getBot().getArmMotor().setTargetPosition(getBot().getArmMotor().getCurrentPosition());
             getBot().getArmMotor().setPower(0.25);
