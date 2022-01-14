@@ -17,8 +17,8 @@ public class TeleOpPID extends CustomOpMode {
 
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
 
-        registerOneShot(() -> gamepad2.a, () -> getBot().getClawServo().setPosition(1));
-        registerOneShot(() -> gamepad2.b, () -> getBot().getClawServo().setPosition(0));
+        registerOneShot(() -> gamepad2.a, () -> getBot().getArmMotor().setTargetPosition(100));
+        registerOneShot(() -> gamepad2.b, () -> getBot().getArmMotor().setTargetPosition(200));
         registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setTargetPosition(getBot().getMaxArmPosition()));
         registerOneShot(() -> gamepad2.y, () -> getBot().getArmMotor().setTargetPosition(getBot().getMinArmPosition()));
 
@@ -95,11 +95,15 @@ public class TeleOpPID extends CustomOpMode {
 
         // Servo
         // Removed to promote only manual control with A/B
-        /*
-        if (getBot().getClawServo() != null && gamepad2.left_trigger > 0.1) { // Don't trigger if a button control has been done to override this
-            getBot().getClawServo().setPosition(gamepad2.left_trigger);
+
+        if (getBot().getClawServo() != null) { // Don't trigger if a button control has been done to override this
+            double position = getBot().getClawServo().getPosition();
+            position = position + gamepad2.left_trigger - gamepad2.right_trigger;
+            if (position > 1) position = 1;
+            if (position < 0) position = 0;
+            getBot().getClawServo().setPosition(position);
         }
-         */
+
 
         // Arm Manual
         if (getBot().getArmMotor() != null) {

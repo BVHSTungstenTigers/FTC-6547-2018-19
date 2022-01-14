@@ -100,7 +100,7 @@ public class HardwareWolfram {
         wheelMotor = map.tryGet(DcMotor.class, "wheel");
 
         if (clawServo != null) {
-            clawServo.scaleRange(0.3, 0.5); // tested experimentally
+            clawServo.scaleRange(0.375, 0.5); // tested experimentally
         }
 
         // Make them stationary
