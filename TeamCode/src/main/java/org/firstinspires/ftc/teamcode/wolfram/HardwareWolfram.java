@@ -90,6 +90,9 @@ public class HardwareWolfram {
         if (clawServo != null) {
             clawServo.scaleRange(0.3, 0.5);
         }
+        if (armMotor != null) {
+            // TODO PID Here
+        }
 
         // Make them stationary
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

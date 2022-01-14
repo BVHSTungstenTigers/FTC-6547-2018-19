@@ -16,6 +16,15 @@ public class TeleOpFieldRelative extends CustomOpMode {
         super.init();
 
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
+        registerOneShot(() -> gamepad1.a, () -> speedModifier = 0.25);
+        registerOneShot(() -> gamepad1.b, () -> speedModifier = 0.5);
+        registerOneShot(() -> gamepad1.y, () -> speedModifier = 1);
+
+        registerOneShot(() -> gamepad2.a, () -> getBot().getClawServo().setPosition(1));
+        registerOneShot(() -> gamepad2.b, () -> getBot().getClawServo().setPosition(0));
+        registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setTargetPosition(getBot().getMaxArmPosition()));
+        registerOneShot(() -> gamepad2.y, () -> getBot().getArmMotor().setTargetPosition(getBot().getMinArmPosition()));
+
         targetPosition = getBot().getArmMotor().getCurrentPosition();
         getBot().getArmMotor().setTargetPosition(targetPosition);
         getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -24,11 +33,6 @@ public class TeleOpFieldRelative extends CustomOpMode {
     @Override
     public void loop() {
         super.loop();
-
-        // Set the speed modifier
-        if (gamepad1.a) speedModifier = 0.25;
-        else if (gamepad1.b) speedModifier = 0.5;
-        else if (gamepad1.y) speedModifier = 1;
 
         //
         // DRIVING
@@ -79,10 +83,12 @@ public class TeleOpFieldRelative extends CustomOpMode {
         // Claw
         //
 
-
-        if (getBot().getClawServo() != null) {
+        // Servo
+        if (getBot().getClawServo() != null && gamepad2.left_trigger > 0.1) { // Don't trigger if a button control has been done to override this
             getBot().getClawServo().setPosition(gamepad2.left_trigger);
         }
+
+        // Arm Manual
         if (getBot().getArmMotor() != null) {
             if (gamepad2.dpad_up) targetPosition += 5;
             if (gamepad2.dpad_down) targetPosition -= 5;
@@ -90,6 +96,8 @@ public class TeleOpFieldRelative extends CustomOpMode {
             getBot().getArmMotor().setTargetPosition(targetPosition);
             getBot().getArmMotor().setPower(.25);
         }
+
+        // Wheel
         if (getBot().getWheelMotor() != null) {
             getBot().getWheelMotor().setPower((gamepad2.right_bumper ? 1 : (gamepad2.left_bumper ? -1 : 0)) * speedModifier);
         }
