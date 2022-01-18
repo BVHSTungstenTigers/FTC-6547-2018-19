@@ -163,9 +163,13 @@ public class HardwareWolfram {
         }
 
         // Limit switch
-        if (getTelemetryFlags().contains(TelemetryFlag.LIMIT_SWITCH) && getLimitSwitch() != null) {
-            telemetry.addData("Limit Switch Voltage", getLimitSwitch().getVoltage());
-            telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
+        if (getTelemetryFlags().contains(TelemetryFlag.LIMIT_SWITCH)) {
+            if (getLimitSwitch() != null) {
+                telemetry.addData("Limit Switch Voltage", getLimitSwitch().getVoltage());
+                telemetry.addData("Limit Switch Triggered", isLimitSwitchTriggered());
+            } else {
+                telemetry.addLine("Limit Switch Not Found");
+            }
         }
 
         // Motors
@@ -177,16 +181,24 @@ public class HardwareWolfram {
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.WHEEL)) {
-            telemetry.addData("Wheel Power", getWheelMotor().getPower());
+            if (getWheelMotor() != null) {
+                telemetry.addData("Wheel Power", getWheelMotor().getPower());
+            } else {
+                telemetry.addLine("Wheel Not Found");
+            }
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.ARM)) {
-            telemetry.addData("Arm Power", getArmMotor().getPower());
-            telemetry.addData("Arm Position", getArmMotor().getCurrentPosition());
-            telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
-            telemetry.addData("Arm PID Using Encoder", getArmMotor().getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER).toString());
-            telemetry.addData("Arm PID To Position", getArmMotor().getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).toString());
-            telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
+            if (getArmMotor() != null) {
+                telemetry.addData("Arm Power", getArmMotor().getPower());
+                telemetry.addData("Arm Position", getArmMotor().getCurrentPosition());
+                telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
+                telemetry.addData("Arm PID Using Encoder", getArmMotor().getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER).toString());
+                telemetry.addData("Arm PID To Position", getArmMotor().getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).toString());
+                telemetry.addData("Arm Target Position", getArmMotor().getTargetPosition());
+            } else {
+                telemetry.addLine("Arm Motor Not Found");
+            }
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
