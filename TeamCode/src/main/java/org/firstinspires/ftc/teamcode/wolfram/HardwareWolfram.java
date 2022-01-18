@@ -218,7 +218,11 @@ public class HardwareWolfram {
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
-            telemetry.addData("Claw Position", getClawServo().getPosition());
+            if (getClawServo() != null) {
+                telemetry.addData("Claw Position", getClawServo().getPosition());
+            } else {
+                telemetry.addLine("Claw Not Found");
+            }
         }
     }
 
