@@ -105,12 +105,8 @@ public class HardwareWolfram {
             clawServo.scaleRange(0.375, 0.5); // tested experimentally
         }
 
-        if (wheelMotor1 != null) { // wheel should break
-            wheelMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-
-        if (wheelMotor2 != null) { // wheel should break
-            wheelMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        if (wheelMotor != null) { // wheel should break
+            wheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
         // Make them stationary
@@ -194,16 +190,10 @@ public class HardwareWolfram {
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.WHEEL)) {
-            if (getWheelMotor1() != null) {
-                telemetry.addData("Wheel 1 Power", getWheelMotor1().getPower());
+            if (getWheelMotor() != null) {
+                telemetry.addData("Wheel Power", getWheelMotor().getPower());
             } else {
-                telemetry.addLine("Wheel 1 Not Found");
-            }
-
-            if (getWheelMotor2() != null) {
-                telemetry.addData("Wheel 2 Power", getWheelMotor2().getPower());
-            } else {
-                telemetry.addLine("Wheel 2 Not Found");
+                telemetry.addLine("Wheel Not Found");
             }
         }
 
