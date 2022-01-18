@@ -58,7 +58,7 @@ public class HardwareWolfram {
     // Claw
     private final Servo clawServo; // claw, optional
     private final DcMotorEx armMotor; // arm, optional
-    private final int maxArmPosition = 285; // START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND
+    private final int maxArmPosition = 380; // START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND
     private final int minArmPosition = 0;
 
     // Wheel
@@ -101,6 +101,10 @@ public class HardwareWolfram {
 
         if (clawServo != null) {
             clawServo.scaleRange(0.375, 0.5); // tested experimentally
+        }
+
+        if (wheelMotor != null) { // wheel should break
+            wheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
         // Make them stationary

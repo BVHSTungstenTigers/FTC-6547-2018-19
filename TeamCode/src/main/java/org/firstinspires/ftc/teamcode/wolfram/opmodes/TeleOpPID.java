@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
-@TeleOp(name = "Field-Relative PID-Arm")
+@TeleOp(name = "[GAME] Field-Relative PID-Arm")
 public class TeleOpPID extends CustomOpMode {
     private boolean fieldRelative;
     private double targetPosition;
@@ -107,7 +107,7 @@ public class TeleOpPID extends CustomOpMode {
 
         // Arm Manual
         if (getBot().getArmMotor() != null) {
-            targetPosition += gamepad2.left_stick_y * 5;
+            targetPosition += gamepad2.left_stick_y * 5 * speedModifierB;
 
             if (targetPosition > getBot().getMaxArmPosition()) targetPosition = getBot().getMaxArmPosition();
             if (targetPosition < getBot().getMinArmPosition()) targetPosition = getBot().getMinArmPosition();

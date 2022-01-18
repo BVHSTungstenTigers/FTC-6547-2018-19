@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
-@Autonomous(name="Drive Forwards")
+@Autonomous(name="[GAME] Drive Forwards")
 public class AutoDriveForwards extends CustomOpMode {
     private static final double FORWARD_SPEED = 0.5;
     @Override

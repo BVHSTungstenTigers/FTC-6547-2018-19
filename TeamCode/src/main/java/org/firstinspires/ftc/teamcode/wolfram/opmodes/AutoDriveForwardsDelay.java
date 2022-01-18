@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
 
-@Autonomous(name="Drive Forwards With Delay")
+@Autonomous(name="[GAME] Drive Forwards With Delay")
 public class AutoDriveForwardsDelay extends CustomOpMode {
     private static final double FORWARD_SPEED = 0.5;
     @Override
