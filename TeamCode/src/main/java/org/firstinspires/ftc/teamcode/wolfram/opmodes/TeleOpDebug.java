@@ -66,8 +66,13 @@ public class TeleOpDebug extends CustomOpMode {
         if (getBot().getArmMotor() != null) {
             getBot().getArmMotor().setTargetPosition((int) (gamepad1.left_trigger * getBot().getMaxArmPosition()));
         }
-        if (getBot().getWheelMotor() != null) {
-            getBot().getWheelMotor().setPower(gamepad1.right_trigger * debugMotorSpeed);
+
+        // Wheels
+        if (getBot().getWheelMotor1() != null) {
+            getBot().getWheelMotor1().setPower(gamepad1.right_trigger * debugMotorSpeed);
+        }
+        if (getBot().getWheelMotor2() != null) {
+            getBot().getWheelMotor2().setPower(gamepad1.right_trigger * debugMotorSpeed);
         }
 
         if (getBot().getClawServo() != null) {
