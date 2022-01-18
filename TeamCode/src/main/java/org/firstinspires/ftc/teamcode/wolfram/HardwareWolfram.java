@@ -168,6 +168,9 @@ public class HardwareWolfram {
 
         if (getTelemetryFlags().contains(TelemetryFlag.IMU)) {
             telemetry.addData("IMU Angle", getIMUAngle());
+            telemetry.addData("IMU Raw Angle 1", angles.firstAngle);
+            telemetry.addData("IMU Raw Angle 2", angles.secondAngle);
+            telemetry.addData("IMU Raw Angle 3", angles.thirdAngle);
             telemetry.addData(
                      "IMU Angle Offset", getImuAngleOffset());
         }
