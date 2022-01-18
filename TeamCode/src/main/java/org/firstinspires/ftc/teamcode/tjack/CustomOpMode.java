@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.wolfram;
+package org.firstinspires.ftc.teamcode.tjack;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +11,7 @@ import lombok.Getter;
 
 public abstract class CustomOpMode extends OpMode {
     @Getter
-    private HardwareWolfram bot;
+    private HardwareTJack bot;
 
     private long totalLoops = 0;
     private final ElapsedTime time = new ElapsedTime();
@@ -20,7 +20,7 @@ public abstract class CustomOpMode extends OpMode {
 
     @Override
     public void init() {
-        bot = new HardwareWolfram(hardwareMap);
+        bot = new HardwareTJack(hardwareMap);
 
         // Report
         telemetry.addData(">", "Robot Ready.");

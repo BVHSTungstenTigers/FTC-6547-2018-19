@@ -1,16 +1,10 @@
-package org.firstinspires.ftc.teamcode.wolfram.opmodes;
+package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
-import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
-import org.firstinspires.ftc.teamcode.wolfram.HardwareWolfram;
+import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
 
 import java.io.File;
 

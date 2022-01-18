@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.wolfram;
+package org.firstinspires.ftc.teamcode.tjack;
 
 import android.os.Environment;
 
@@ -7,20 +7,14 @@ import androidx.annotation.Nullable;
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.ftcrobotcontroller.BuildConfig;
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
-import com.qualcomm.robotcore.util.ReadWriteFile;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -28,12 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import lombok.Getter;
@@ -42,10 +31,10 @@ import lombok.Setter;
 
 /**
  * This is the class that stores the hardware profile of the bot
- * The bot's name is Wolfram. Wolfram is not an API or anything.
+ * The bot's name is TJack. TJack is not an API or anything.
  */
 @Getter
-public class HardwareWolfram {
+public class HardwareTJack {
     private final HardwareMap map;
     private final Set<TelemetryFlag> telemetryFlags = EnumSet.allOf(TelemetryFlag.class); // Change to empty set to reduce lag
 
@@ -82,7 +71,7 @@ public class HardwareWolfram {
     private final File soundDir = new File(Environment.getExternalStorageDirectory(), "/sound");
     private final File pidfDir = new File(Environment.getExternalStorageDirectory(), "PID");
 
-    public HardwareWolfram(@NonNull HardwareMap map) {
+    public HardwareTJack(@NonNull HardwareMap map) {
         this.map = map;
 
         // Make sure dirs exist

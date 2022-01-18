@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.wolfram.opmodes;
+package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
+import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
 
 @Autonomous(name="Drive By Time")
 public class AutoDriveByTime extends CustomOpMode {

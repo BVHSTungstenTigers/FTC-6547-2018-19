@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.wolfram.opmodes;
+package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
+import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
 
 @Autonomous(name="[GAME] Drive Forwards")
 public class AutoDucksRed extends CustomOpMode {

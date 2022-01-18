@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode.wolfram.opmodes;
+package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-import org.firstinspires.ftc.teamcode.wolfram.CustomOpMode;
+import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
 
 @TeleOp(name = "[GAME] Field-Relative PID-Arm")
 public class TeleOpPID extends CustomOpMode {
