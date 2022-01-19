@@ -30,11 +30,11 @@ public class AutoDucksRed extends CustomOpMode {
 
         //spin duck
 
-        getBot().getWheelMotor2().setPower(WHEEL_SPEED);
+        getBot().getDuckWheelMotor2().setPower(WHEEL_SPEED);
 
         sleep(5000);
 
-        getBot().getWheelMotor2().setPower(0);
+        getBot().getDuckWheelMotor2().setPower(0);
 
         sleep(200);
 

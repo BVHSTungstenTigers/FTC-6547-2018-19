@@ -51,8 +51,8 @@ public class HardwareTJack {
     private final int minArmPosition = 0;
 
     // Wheel
-    private final DcMotor wheelMotor1; // wheel1, optional
-    private final DcMotor wheelMotor2; // wheel2, optional
+    private final DcMotor duckWheelMotor1; // wheel1, optional
+    private final DcMotor duckWheelMotor2; // wheel2, optional
 
     // Other components
     @Nullable
@@ -87,18 +87,18 @@ public class HardwareTJack {
         // Load the claw, arm, and wheel motors
         clawServo = map.tryGet(Servo.class, "claw");
         armMotor = map.tryGet(DcMotorEx.class, "arm");
-        wheelMotor1 = map.tryGet(DcMotor.class, "wheel1");
-        wheelMotor2 = map.tryGet(DcMotor.class, "wheel2");
+        duckWheelMotor1 = map.tryGet(DcMotor.class, "wheel1");
+        duckWheelMotor2 = map.tryGet(DcMotor.class, "wheel2");
 
         if (clawServo != null) {
             clawServo.scaleRange(0.375, 0.5); // tested experimentally
         }
 
-        if (wheelMotor1 != null) { // wheel should break
-            wheelMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        if (duckWheelMotor1 != null) { // wheel should break
+            duckWheelMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
-        if (wheelMotor2 != null) { // wheel should break
-            wheelMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        if (duckWheelMotor2 != null) { // wheel should break
+            duckWheelMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
         // Make them stationary
@@ -182,14 +182,14 @@ public class HardwareTJack {
         }
 
         if (getTelemetryFlags().contains(TelemetryFlag.WHEEL)) {
-            if (getWheelMotor1() != null) {
-                telemetry.addData("Wheel 1 Power", getWheelMotor1().getPower());
+            if (getDuckWheelMotor1() != null) {
+                telemetry.addData("Wheel 1 Power", getDuckWheelMotor1().getPower());
             } else {
                 telemetry.addLine("Wheel 1 Not Found");
             }
 
-            if (getWheelMotor2() != null) {
-                telemetry.addData("Wheel 2 Power", getWheelMotor2().getPower());
+            if (getDuckWheelMotor2() != null) {
+                telemetry.addData("Wheel 2 Power", getDuckWheelMotor2().getPower());
             } else {
                 telemetry.addLine("Wheel 2 Not Found");
             }
