@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 import lombok.Getter;
@@ -13,14 +15,25 @@ public abstract class CustomOpMode extends OpMode {
     @Getter
     private HardwareTJack bot;
 
+    private Set<TelemetryFlag> flags;
+
     private long totalLoops = 0;
     private final ElapsedTime time = new ElapsedTime();
 
     private final Collection<FunctionOneShot> oneShots = new ArrayList<>();
 
+    public CustomOpMode() {
+        this(EnumSet.allOf(TelemetryFlag.class));
+    }
+
+    public CustomOpMode(Set<TelemetryFlag> flags) {
+        this.flags = flags;
+    }
+
+
     @Override
     public void init() {
-        bot = new HardwareTJack(hardwareMap);
+        bot = new HardwareTJack(hardwareMap, flags);
 
         // Report
         telemetry.addData(">", "Robot Ready.");

@@ -36,7 +36,7 @@ import lombok.Setter;
 @Getter
 public class HardwareTJack {
     private final HardwareMap map;
-    private final Set<TelemetryFlag> telemetryFlags = EnumSet.allOf(TelemetryFlag.class); // Change to empty set to reduce lag
+    private final Set<TelemetryFlag> telemetryFlags; // Change to empty set to reduce lag
 
     // Chasis motors
     private final DcMotor frontLeftMotor; // frontLeft
@@ -71,8 +71,9 @@ public class HardwareTJack {
     private final File soundDir = new File(Environment.getExternalStorageDirectory(), "/sound");
     private final File pidfDir = new File(Environment.getExternalStorageDirectory(), "PID");
 
-    public HardwareTJack(@NonNull HardwareMap map) {
+    public HardwareTJack(@NonNull HardwareMap map, @NonNull Set<TelemetryFlag> telemetryFlags) {
         this.map = map;
+        this.telemetryFlags = telemetryFlags;
 
         // Make sure dirs exist
         if (!soundDir.exists()) soundDir.mkdirs();
