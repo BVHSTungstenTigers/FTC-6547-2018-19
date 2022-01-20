@@ -121,7 +121,7 @@ public class TeleOpPID extends CustomOpMode {
             getBot().getArmMotor().setTargetPosition((int) targetPosition);
         }
 
-        // Wheel 1 and 2
+        // Duck Wheel 1 and 2
         if (getBot().getDuckWheelMotor1() != null) {
             getBot().getDuckWheelMotor1().setPower(gamepad2.right_stick_x * speedModifierB);
         }
