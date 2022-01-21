@@ -47,8 +47,9 @@ public class HardwareTJack {
     // Claw
     private final Servo clawServo; // claw, optional
     private final DcMotorEx armMotor; // arm, optional
-    private final int maxArmPosition = 380; // START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND
-    private final int minArmPosition = 0;
+    private final int maxArmPosition = 350; /* START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND//
+    was initially 380 (overextended for ally hub)*/
+    private final int minArmPosition = 20; // was initially 0 (overextended)
 
     // Wheel
     private final DcMotor duckWheelMotor1; // wheel1, optional

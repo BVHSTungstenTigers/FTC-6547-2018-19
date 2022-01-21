@@ -20,13 +20,22 @@ public class TeleOpPID extends CustomOpMode {
     @Override
     public void init() {
         super.init();
-
+        //controller 1 set field relative
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
 
-        registerOneShot(() -> gamepad2.a, () -> targetPosition = 100);
-        registerOneShot(() -> gamepad2.b, () -> targetPosition = 200);
-        registerOneShot(() -> gamepad2.x, () -> targetPosition = getBot().getMaxArmPosition());
-        registerOneShot(() -> gamepad2.y, () -> targetPosition = getBot().getMinArmPosition());
+        //controller 2 arm level controls (one shot- executes code once)
+        //bottom level
+        registerOneShot(() -> gamepad2.b, () -> targetPosition = 50);
+        //shared hub
+        registerOneShot(() -> gamepad2.y, () -> targetPosition = 125);
+        //top level
+        registerOneShot(() -> gamepad2.x, () -> targetPosition = 175);
+        //floor
+        registerOneShot(() -> gamepad2.a, () -> targetPosition = getBot().getMinArmPosition());
+
+        /* [removed function] max (behind)
+        registerOneShot(() -> gamepad2.x, () -> targetPosition = getBot().getMaxArmPosition());*/
+
 
         // Setup PID bs
         if (getBot().getArmMotor() != null) {
@@ -45,9 +54,11 @@ public class TeleOpPID extends CustomOpMode {
     public void loop() {
         super.loop();
 
-        // Left + right bumper = sneak + spring buttons.
+        // CTRL 1: DRIVE SPEED: Left + right bumper = sneak + spring buttons
         // Hold them down
         double speedModifierA = gamepad1.left_bumper ? 0.3 : (gamepad1.right_bumper ? 1 : 0.7);
+        // CTRL 2 ARM SPEED: Left + right bumper = sneak + spring buttons.
+        // Hold them down
         double speedModifierB = gamepad2.left_bumper ? 0.3 : (gamepad2.right_bumper ? 1 : 0.7);
 
         //
