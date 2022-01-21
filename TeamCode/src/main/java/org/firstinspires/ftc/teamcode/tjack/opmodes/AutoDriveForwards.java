@@ -2,13 +2,15 @@ package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
+import org.firstinspires.ftc.teamcode.tjack.CustomLinearOpMode;
 
 @Autonomous(name="[GAME] Drive Forwards")
-public class AutoDriveForwards extends CustomOpMode {
+public class AutoDriveForwards extends CustomLinearOpMode {
+
     private static final double FORWARD_SPEED = 0.5;
+
     @Override
-    public void start() {
+    public void runOpMode() throws InterruptedException {
         super.start();
 
         getBot().getFrontLeftMotor().setPower(FORWARD_SPEED);

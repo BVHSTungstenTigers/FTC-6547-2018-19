@@ -15,7 +15,7 @@ public abstract class CustomOpMode extends OpMode {
     @Getter
     private HardwareTJack bot;
 
-    private Set<TelemetryFlag> flags;
+    private final Set<TelemetryFlag> flags;
 
     private long totalLoops = 0;
     private final ElapsedTime time = new ElapsedTime();

@@ -5,13 +5,13 @@ import static org.firstinspires.ftc.teamcode.tjack.AllianceColor.RED;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.tjack.AllianceColor;
-import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
+import org.firstinspires.ftc.teamcode.tjack.CustomLinearOpMode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class AutoDucks extends CustomOpMode {
+public abstract class AutoDucks extends CustomLinearOpMode {
     private static final double FORWARD_SPEED = 0.5;
     private static final double WHEEL_SPEED = -0.25;
 
@@ -19,7 +19,7 @@ public abstract class AutoDucks extends CustomOpMode {
     private final AllianceColor ALLIANCE_COLOR;
 
     @Override
-    public void start() {
+    public void runOpMode() throws InterruptedException {
         super.start();
 
         //move forward towards ducks
@@ -35,8 +35,8 @@ public abstract class AutoDucks extends CustomOpMode {
         getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
 
-        //run time
-        sleep(720);
+        //run time for drive forwards (overextends as a reassurance)
+        sleep(750);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
@@ -49,19 +49,17 @@ public abstract class AutoDucks extends CustomOpMode {
 
         getBot().getDuckWheelMotor1().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * WHEEL_SPEED);
 
+        //run time for duck spinner
         sleep(5050);
 
         getBot().getDuckWheelMotor1().setPower(0);
-        System.out.println("1");
+
         sleep(200);
-        System.out.println("2");
-        //test
-        getBot().getDuckWheelMotor1().setPower(1);
 
         sleep(200);
 
         /*drive into house-
-        note: for omni wheels (side-to-side) two wheels turn outwards the opposite turn inwards*/
+        note: for mecha wheels (side-to-side) two wheels turn outwards the opposite turn inwards*/
         getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
         getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
         getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
