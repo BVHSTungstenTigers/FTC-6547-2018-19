@@ -114,17 +114,18 @@ public class TeleOpPID extends CustomOpMode {
         // Removed to promote only manual control with A/B
 
         if (getBot().getClawServo() != null) { // Don't trigger if a button control has been done to override this
-            double position = getBot().getClawServo().getPosition();
-            position = position + gamepad2.left_trigger - gamepad2.right_trigger;
+            /*double position = getBot().getClawServo().getPosition();
+            position = position - gamepad2.left_trigger + gamepad2.right_trigger;
             if (position > 1) position = 1;
-            if (position < 0) position = 0;
-            getBot().getClawServo().setPosition(position);
+            if (position < 0) position = 0;*/
+            if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
+            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);
         }
 
 
         // Arm Manual
         if (getBot().getArmMotor() != null) {
-            targetPosition += gamepad2.left_stick_y * 5 * speedModifierB;
+            targetPosition += -gamepad2.left_stick_y * 5 * speedModifierB;
 
             if (targetPosition > getBot().getMaxArmPosition()) targetPosition = getBot().getMaxArmPosition();
             if (targetPosition < getBot().getMinArmPosition()) targetPosition = getBot().getMinArmPosition();

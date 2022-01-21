@@ -20,7 +20,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        super.start();
+        super.runOpMode();
 
         //move forward towards ducks
 
