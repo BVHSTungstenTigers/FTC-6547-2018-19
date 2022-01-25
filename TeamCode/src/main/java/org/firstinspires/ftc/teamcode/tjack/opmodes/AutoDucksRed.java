@@ -8,6 +8,6 @@ import org.firstinspires.ftc.teamcode.tjack.CustomOpMode;
 @Autonomous(name="[GAME] Auto Ducks Red")
 public class AutoDucksRed extends AutoDucks {
     public AutoDucksRed() {
-        super(AllianceColor.BLUE);
+        super(AllianceColor.RED);
     }
 }

@@ -26,12 +26,14 @@ public class TeleOpPID extends CustomOpMode {
         //controller 2 arm level controls (one shot- executes code once)
         //bottom level
         registerOneShot(() -> gamepad2.b, () -> targetPosition = 50);
-        //shared hub
-        registerOneShot(() -> gamepad2.y, () -> targetPosition = 125);
-        //top level
-        registerOneShot(() -> gamepad2.x, () -> targetPosition = 175);
-        //floor
-        registerOneShot(() -> gamepad2.a, () -> targetPosition = getBot().getMinArmPosition());
+        //middle hub
+        registerOneShot(() -> gamepad2.y, () -> targetPosition = 100);
+        //top level -- changed to start motor
+        registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setPower(1)/*targetPosition = 150*/);
+        //floor -- changed to kill motor
+        registerOneShot(() -> gamepad2.a, () -> getBot().getArmMotor().setPower(0));
+
+                        /*targetPosition = /*getBot().getMinArmPosition() does not work*/
 
         /* [removed function] max (behind)
         registerOneShot(() -> gamepad2.x, () -> targetPosition = getBot().getMaxArmPosition());*/
@@ -114,21 +116,22 @@ public class TeleOpPID extends CustomOpMode {
         // Removed to promote only manual control with A/B
 
         if (getBot().getClawServo() != null) { // Don't trigger if a button control has been done to override this
-            /*double position = getBot().getClawServo().getPosition();
-            position = position - gamepad2.left_trigger + gamepad2.right_trigger;
-            if (position > 1) position = 1;
-            if (position < 0) position = 0;*/
-            if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
-            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);
+            double position = getBot().getClawServo().getPosition();
+            position = position + gamepad2.left_trigger - gamepad2.right_trigger;
+            if (position > 1) position = 1;;
+            if (position < 0) position = 0;
+            /*if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
+            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);*/
+            getBot().getClawServo().setPosition(position);
         }
 
 
         // Arm Manual
         if (getBot().getArmMotor() != null) {
-            targetPosition += -gamepad2.left_stick_y * 5 * speedModifierB;
+            targetPosition -= gamepad2.left_stick_y * 5 * speedModifierB;
 
             if (targetPosition > getBot().getMaxArmPosition()) targetPosition = getBot().getMaxArmPosition();
-            if (targetPosition < getBot().getMinArmPosition()) targetPosition = getBot().getMinArmPosition();
+            if (targetPosition < 0) targetPosition = 0; //was get arm position min value
 
             getBot().getArmMotor().setTargetPosition((int) targetPosition);
         }

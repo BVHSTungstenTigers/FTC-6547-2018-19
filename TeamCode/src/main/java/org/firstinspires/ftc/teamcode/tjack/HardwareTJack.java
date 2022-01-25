@@ -49,7 +49,7 @@ public class HardwareTJack {
     private final DcMotorEx armMotor; // arm, optional
     private final int maxArmPosition = 350; /* START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND//
     was initially 380 (overextended for ally hub)*/
-    private final int minArmPosition = 20; // was initially 0 (overextended)
+    //private final int minArmPosition = -15; // was initially 0 (overextended) *commented out
 
     // Wheel
     private final DcMotor duckWheelMotor1; // wheel1, optional
@@ -93,7 +93,7 @@ public class HardwareTJack {
         duckWheelMotor2 = map.tryGet(DcMotor.class, "wheel2");
 
         if (clawServo != null) {
-            clawServo.scaleRange(0.5, 0.7); // tested experimentally
+            clawServo.scaleRange(0, 1); // tested experimentally
         }
 
         if (duckWheelMotor1 != null) { // wheel should break

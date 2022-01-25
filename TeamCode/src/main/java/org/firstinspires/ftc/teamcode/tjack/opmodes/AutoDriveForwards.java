@@ -11,7 +11,7 @@ public class AutoDriveForwards extends CustomLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        super.start();
+        super.runOpMode();
 
         getBot().getFrontLeftMotor().setPower(FORWARD_SPEED);
         getBot().getFrontRightMotor().setPower(FORWARD_SPEED);

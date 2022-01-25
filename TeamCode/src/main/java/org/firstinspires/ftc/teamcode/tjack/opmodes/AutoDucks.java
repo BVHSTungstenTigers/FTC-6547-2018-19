@@ -24,19 +24,22 @@ public abstract class AutoDucks extends CustomLinearOpMode {
 
         //move forward towards ducks
 
-        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
-        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
-
-        /*trying to see if this will make it move forward
-        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
-        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
-        */
-
-        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
-        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
+        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ?  1 : 1) * FORWARD_SPEED);
 
         //run time for drive forwards (overextends as a reassurance)
         sleep(750);
+
+        //after it hits making it drive slowly to wheel
+        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
+        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
+        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
+        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
+
+        //run time for drive forwards extended
+        sleep(300);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
@@ -48,11 +51,13 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         //spin duck
 
         getBot().getDuckWheelMotor1().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * WHEEL_SPEED);
+        getBot().getDuckWheelMotor2().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * WHEEL_SPEED);
 
         //run time for duck spinner
         sleep(5050);
 
         getBot().getDuckWheelMotor1().setPower(0);
+        getBot().getDuckWheelMotor2().setPower(0);
 
         sleep(200);
 
@@ -60,12 +65,23 @@ public abstract class AutoDucks extends CustomLinearOpMode {
 
         /*drive into house-
         note: for mecha wheels (side-to-side) two wheels turn outwards the opposite turn inwards*/
+        //changed the red code don't know if it will work
         getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
         getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
         getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
 
-        sleep(500);
+        //changed the time (so it wouldnt over extend angle)
+        sleep(450);
+
+        //move forward towards ally parking
+        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
+
+        //run time for drive forwards (overextends as a reassurance)
+        sleep(1000);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
