@@ -15,13 +15,14 @@ public abstract class AutoDucks extends CustomLinearOpMode {
     private static final double FORWARD_SPEED = 0.5;
     private static final double WHEEL_SPEED = -0.25;
 
+
     @Getter
     private final AllianceColor ALLIANCE_COLOR;
 
     @Override
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
-
+        waitForStart();
         //move forward towards ducks
 
         getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
@@ -30,7 +31,14 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ?  1 : 1) * FORWARD_SPEED);
 
         //run time for drive forwards (overextends as a reassurance)
-        sleep(750);
+        sleep(500);
+
+        getBot().getFrontLeftMotor().setPower(0);
+        getBot().getFrontRightMotor().setPower(0);
+        getBot().getBackLeftMotor().setPower(0);
+        getBot().getBackRightMotor().setPower(0);
+
+        sleep(100);
 
         //after it hits making it drive slowly to wheel
         getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
@@ -39,7 +47,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
 
         //run time for drive forwards extended
-        sleep(300);
+        sleep(400);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
@@ -81,7 +89,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
 
         //run time for drive forwards (overextends as a reassurance)
-        sleep(1000);
+        sleep(900);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);

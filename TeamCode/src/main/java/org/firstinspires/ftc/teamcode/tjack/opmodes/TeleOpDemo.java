@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode.tjack.opmodes;
-//bot IP address adb connect 192.168.43.1
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,12 +8,12 @@ import org.firstinspires.ftc.teamcode.tjack.TelemetryFlag;
 
 import java.util.EnumSet;
 
-@TeleOp(name = "[GAME] Field-Relative PID-Arm")
-public class TeleOpPID extends CustomOpMode {
+@TeleOp(name = "[DEMO] Bot Display")
+public class TeleOpDemo extends CustomOpMode {
     private boolean fieldRelative = true;
     private double targetPosition;
 
-    public TeleOpPID() {
+    public TeleOpDemo() {
         super(EnumSet.of(TelemetryFlag.ARM, TelemetryFlag.CLAW));
     }
 
@@ -23,22 +22,6 @@ public class TeleOpPID extends CustomOpMode {
         super.init();
         //controller 1 set field relative
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
-
-        //controller 2 arm level controls (one shot- executes code once)
-        //bottom level
-        registerOneShot(() -> gamepad2.b, () -> targetPosition = 50);
-        //middle hub
-        registerOneShot(() -> gamepad2.y, () -> targetPosition = 100);
-        //top level -- changed to start motor
-        registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setPower(1)/*targetPosition = 150*/);
-        //floor -- changed to kill motor
-        registerOneShot(() -> gamepad2.a, () -> getBot().getArmMotor().setPower(0));
-
-                        /*targetPosition = /*getBot().getMinArmPosition() does not work*/
-
-        /* [removed function] max (behind)
-        registerOneShot(() -> gamepad2.x, () -> targetPosition = getBot().getMaxArmPosition());*/
-
 
         // Setup PID bs
         if (getBot().getArmMotor() != null) {
