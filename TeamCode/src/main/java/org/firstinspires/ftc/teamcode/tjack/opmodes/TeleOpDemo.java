@@ -11,7 +11,7 @@ import java.util.EnumSet;
 @TeleOp(name = "[DEMO] Bot Display")
 public class TeleOpDemo extends CustomOpMode {
     private boolean fieldRelative = true;
-    private double targetPosition;
+    private int targetPosition;
 
     public TeleOpDemo() {
         super(EnumSet.of(TelemetryFlag.ARM, TelemetryFlag.CLAW));
@@ -23,13 +23,17 @@ public class TeleOpDemo extends CustomOpMode {
         //controller 1 set field relative
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
 
+        //set arm positions (fixed)
+        registerOneShot(() -> gamepad1.y, () -> targetPosition = 150);
+        registerOneShot(() -> gamepad1.b, () -> targetPosition = 50);
+
         // Setup PID bs
         if (getBot().getArmMotor() != null) {
             // Unknown
             // PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
             // getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
             targetPosition = getBot().getArmMotor().getCurrentPosition();
-            getBot().getArmMotor().setTargetPosition((int) targetPosition);
+            getBot().getArmMotor().setTargetPosition(targetPosition);
             getBot().getArmMotor().setPower(1);
 
             getBot().getArmMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -39,14 +43,6 @@ public class TeleOpDemo extends CustomOpMode {
     @Override
     public void loop() {
         super.loop();
-
-        // CTRL 1: DRIVE SPEED: Left + right bumper = sneak + spring buttons
-        // Hold them down
-        double speedModifierA = gamepad1.left_bumper ? 0.3 : (gamepad1.right_bumper ? 1 : 0.7);
-        // CTRL 2 ARM SPEED: Left + right bumper = sneak + spring buttons.
-        // Hold them down
-        double speedModifierB = gamepad2.left_bumper ? 0.3 : (gamepad2.right_bumper ? 1 : 0.7);
-
         //
         // DRIVING
         //
@@ -87,46 +83,25 @@ public class TeleOpDemo extends CustomOpMode {
         if (fieldRelative) joystickAngle -= Math.toRadians(getBot().getIMUAngle());
 
         // Set the motor powers
-        getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX) * speedModifierA);
-        getBot().getBackLeftMotor().setPower((r * Math.sin(joystickAngle) + rightX) * speedModifierA);
-        getBot().getFrontRightMotor().setPower((r * Math.sin(joystickAngle) - rightX) * speedModifierA);
-        getBot().getBackRightMotor().setPower((r * Math.cos(joystickAngle) - rightX) * speedModifierA);
+        getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX));
+        getBot().getBackLeftMotor().setPower((r * Math.sin(joystickAngle) + rightX));
+        getBot().getFrontRightMotor().setPower((r * Math.sin(joystickAngle) - rightX));
+        getBot().getBackRightMotor().setPower((r * Math.cos(joystickAngle) - rightX));
 
         //
         // Claw
         //
 
-        // Servo
-        // Removed to promote only manual control with A/B
-
-        if (getBot().getClawServo() != null) { // Don't trigger if a button control has been done to override this
-            double position = getBot().getClawServo().getPosition();
-            position = position + gamepad2.left_trigger - gamepad2.right_trigger;
-            if (position > 1) position = 1;;
-            if (position < 0) position = 0;
-            /*if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
-            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);*/
-            getBot().getClawServo().setPosition(position);
-        }
-
-
         // Arm Manual
         if (getBot().getArmMotor() != null) {
-            targetPosition -= gamepad2.left_stick_y * 5 * speedModifierB;
-
-            if (targetPosition > getBot().getMaxArmPosition()) targetPosition = getBot().getMaxArmPosition();
-            if (targetPosition < 0) targetPosition = 0; //was get arm position min value
-
-            getBot().getArmMotor().setTargetPosition((int) targetPosition);
+            getBot().getArmMotor().setTargetPosition(targetPosition);
         }
 
         // Duck Wheel 1 and 2
-        if (getBot().getDuckWheelMotor1() != null) {
-            getBot().getDuckWheelMotor1().setPower(gamepad2.right_stick_x * speedModifierB);
-        }
-
-        if (getBot().getDuckWheelMotor2() != null) {
-            getBot().getDuckWheelMotor2().setPower(gamepad2.right_stick_x * speedModifierB);
+        if (getBot().getDuckWheelMotor1() != null && getBot().getDuckWheelMotor2() != null) {
+            //use "a" to turn duck wheel on and off (duck wheels)
+            getBot().getDuckWheelMotor1().setPower(gamepad1.a ? 1 : 0);
+            getBot().getDuckWheelMotor2().setPower(gamepad1.a ? 1 : 0);
         }
 
         //
