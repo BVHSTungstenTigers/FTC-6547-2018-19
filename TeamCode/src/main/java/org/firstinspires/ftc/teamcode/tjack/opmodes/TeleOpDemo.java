@@ -24,7 +24,7 @@ public class TeleOpDemo extends CustomOpMode {
         registerOneShot(() -> gamepad1.x, () -> fieldRelative = !fieldRelative);
 
         //set arm positions (fixed)
-        registerOneShot(() -> gamepad1.y, () -> targetPosition = 150);
+        registerOneShot(() -> gamepad1.y, () -> targetPosition = 100);
         registerOneShot(() -> gamepad1.b, () -> targetPosition = 50);
 
         // Setup PID bs

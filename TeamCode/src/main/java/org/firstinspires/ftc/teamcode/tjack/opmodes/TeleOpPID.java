@@ -29,12 +29,12 @@ public class TeleOpPID extends CustomOpMode {
         registerOneShot(() -> gamepad2.b, () -> targetPosition = 50);
         //middle hub
         registerOneShot(() -> gamepad2.y, () -> targetPosition = 100);
-        //top level -- changed to start motor
-        registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setPower(1)/*targetPosition = 150*/);
-        //floor -- changed to kill motor
-        registerOneShot(() -> gamepad2.a, () -> getBot().getArmMotor().setPower(0));
+        //top level
+        registerOneShot(() -> gamepad2.x, () -> targetPosition = 150 );
+        //floor
+        registerOneShot(() -> gamepad2.a, () -> targetPosition = getBot().getMinArmPosition());
 
-                        /*targetPosition = /*getBot().getMinArmPosition() does not work*/
+        /*targetPosition = /*getBot().getMinArmPosition() does not work*/
 
         /* [removed function] max (behind)
         registerOneShot(() -> gamepad2.x, () -> targetPosition = getBot().getMaxArmPosition());*/

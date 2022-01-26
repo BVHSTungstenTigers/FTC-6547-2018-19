@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class AutoDucks extends CustomLinearOpMode {
+    //is the forward speed var needed...? -joss
     private static final double FORWARD_SPEED = 0.5;
     private static final double WHEEL_SPEED = -0.25;
 
@@ -25,10 +26,10 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         waitForStart();
         //move forward towards ducks
 
-        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
-        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
-        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
-        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ?  1 : 1) * FORWARD_SPEED);
+        getBot().getFrontLeftMotor().setPower(1);
+        getBot().getFrontRightMotor().setPower(1);
+        getBot().getBackLeftMotor().setPower(1);
+        getBot().getBackRightMotor().setPower(1);
 
         //run time for drive forwards (overextends as a reassurance)
         sleep(500);
@@ -41,13 +42,13 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         sleep(100);
 
         //after it hits making it drive slowly to wheel
-        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
-        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
-        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
-        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -0.30 : 0.30) * FORWARD_SPEED);
+        getBot().getFrontLeftMotor().setPower(0.30 * FORWARD_SPEED);
+        getBot().getFrontRightMotor().setPower(0.30 * FORWARD_SPEED);
+        getBot().getBackLeftMotor().setPower(0.30 * FORWARD_SPEED);
+        getBot().getBackRightMotor().setPower(0.30 * FORWARD_SPEED);
 
         //run time for drive forwards extended
-        sleep(400);
+        sleep(700);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
@@ -80,7 +81,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
 
         //changed the time (so it wouldnt over extend angle)
-        sleep(450);
+        sleep(400);
 
         //move forward towards ally parking
         getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
