@@ -60,9 +60,13 @@ public class TeleOpPID extends CustomOpMode {
         // CTRL 1: DRIVE SPEED: Left + right bumper = sneak + spring buttons
         // Hold them down
         double speedModifierA = gamepad1.left_bumper ? 0.3 : (gamepad1.right_bumper ? 1 : 0.7);
+
         // CTRL 2 ARM SPEED: Left + right bumper = sneak + spring buttons.
         // Hold them down
         double speedModifierB = gamepad2.left_bumper ? 0.3 : (gamepad2.right_bumper ? 1 : 0.7);
+
+        /*//angle speed (make it happen slowly)
+        double speedModifierC = 0.90;*/
 
         //
         // DRIVING
@@ -103,6 +107,11 @@ public class TeleOpPID extends CustomOpMode {
 
         if (fieldRelative) joystickAngle -= Math.toRadians(getBot().getIMUAngle());
 
+        //don't know if this will work- try and make slow down on angles
+    if (rightX !=  0){
+            speedModifierA = 0.90;
+        }
+
         // Set the motor powers
         getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX) * speedModifierA);
         getBot().getBackLeftMotor().setPower((r * Math.sin(joystickAngle) + rightX) * speedModifierA);
@@ -121,8 +130,10 @@ public class TeleOpPID extends CustomOpMode {
             position = position + gamepad2.left_trigger - gamepad2.right_trigger;
             if (position > 1) position = 1;;
             if (position < 0) position = 0;
-            /*if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
-            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);*/
+
+            //triggers to open and close claw (rotate servos)
+            if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
+            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);
             getBot().getClawServo().setPosition(position);
         }
 

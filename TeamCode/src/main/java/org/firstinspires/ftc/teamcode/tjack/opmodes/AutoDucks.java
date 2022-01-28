@@ -24,7 +24,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
         waitForStart();
-        //move forward towards ducks
+        //move forward from wall
 
         getBot().getFrontLeftMotor().setPower(1);
         getBot().getFrontRightMotor().setPower(1);
@@ -32,14 +32,37 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower(1);
 
         //run time for drive forwards (overextends as a reassurance)
-        sleep(500);
+        if(ALLIANCE_COLOR == RED){
+            sleep(50);
+        }
+        else {
+            //for blue (right side hits wall if else)
+            sleep(120);
+        }
+        //turn towards duck spinner
 
-        getBot().getFrontLeftMotor().setPower(0);
-        getBot().getFrontRightMotor().setPower(0);
-        getBot().getBackLeftMotor().setPower(0);
-        getBot().getBackRightMotor().setPower(0);
+        getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
+        getBot().getFrontRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
+        getBot().getBackLeftMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
+        getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
 
-        sleep(100);
+        if(ALLIANCE_COLOR == RED){
+            sleep(540);
+        }
+        else {
+            //for blue
+            sleep(450);
+        }
+
+        //move forward towards ducks
+
+        getBot().getFrontLeftMotor().setPower(1 * FORWARD_SPEED);
+        getBot().getFrontRightMotor().setPower(1 * FORWARD_SPEED);
+        getBot().getBackLeftMotor().setPower(1 * FORWARD_SPEED);
+        getBot().getBackRightMotor().setPower(1 * FORWARD_SPEED);
+
+        //run time for drive forwards (overextends as a reassurance)
+        sleep(300);
 
         //after it hits making it drive slowly to wheel
         getBot().getFrontLeftMotor().setPower(0.30 * FORWARD_SPEED);
@@ -48,7 +71,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower(0.30 * FORWARD_SPEED);
 
         //run time for drive forwards extended
-        sleep(700);
+        sleep(1900);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
@@ -59,8 +82,8 @@ public abstract class AutoDucks extends CustomLinearOpMode {
 
         //spin duck
 
-        getBot().getDuckWheelMotor1().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * WHEEL_SPEED);
-        getBot().getDuckWheelMotor2().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * WHEEL_SPEED);
+        getBot().getDuckWheelMotor1().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * WHEEL_SPEED);
+        getBot().getDuckWheelMotor2().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * WHEEL_SPEED);
 
         //run time for duck spinner
         sleep(5050);
@@ -68,9 +91,8 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getDuckWheelMotor1().setPower(0);
         getBot().getDuckWheelMotor2().setPower(0);
 
-        sleep(200);
+        sleep(400);
 
-        sleep(200);
 
         /*drive into house-
         note: for mecha wheels (side-to-side) two wheels turn outwards the opposite turn inwards*/
@@ -81,7 +103,13 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? -1 : 1) * FORWARD_SPEED);
 
         //changed the time (so it wouldnt over extend angle)
-        sleep(400);
+        if(ALLIANCE_COLOR == RED){
+            sleep(425);
+        }
+        else {
+            //for blue
+            sleep(900);
+        }
 
         //move forward towards ally parking
         getBot().getFrontLeftMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
@@ -90,7 +118,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
 
         //run time for drive forwards (overextends as a reassurance)
-        sleep(900);
+        sleep(850);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);

@@ -25,7 +25,7 @@ public class TeleOpDemo extends CustomOpMode {
 
         //set arm positions (fixed)
         registerOneShot(() -> gamepad1.y, () -> targetPosition = 100);
-        registerOneShot(() -> gamepad1.b, () -> targetPosition = 50);
+        registerOneShot(() -> gamepad1.a, () -> targetPosition = 50);
 
         // Setup PID bs
         if (getBot().getArmMotor() != null) {
@@ -100,8 +100,8 @@ public class TeleOpDemo extends CustomOpMode {
         // Duck Wheel 1 and 2
         if (getBot().getDuckWheelMotor1() != null && getBot().getDuckWheelMotor2() != null) {
             //use "a" to turn duck wheel on and off (duck wheels)
-            getBot().getDuckWheelMotor1().setPower(gamepad1.a ? 1 : 0);
-            getBot().getDuckWheelMotor2().setPower(gamepad1.a ? 1 : 0);
+            getBot().getDuckWheelMotor1().setPower(gamepad1.b ? 1 : 0);
+            getBot().getDuckWheelMotor2().setPower(gamepad1.b ? 1 : 0);
         }
 
         //
