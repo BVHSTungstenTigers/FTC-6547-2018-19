@@ -183,6 +183,7 @@ public class HardwareTJack {
         }
 
         // Motors
+        //wheels
         if (getTelemetryFlags().contains(TelemetryFlag.CHASIS)) {
             telemetry.addData("Front Left Power", getFrontLeftMotor().getPower());
             telemetry.addData("Front Right Power", getFrontRightMotor().getPower());
@@ -190,6 +191,7 @@ public class HardwareTJack {
             telemetry.addData("Back Right Power", getBackRightMotor().getPower());
         }
 
+        //duck wheels
         if (getTelemetryFlags().contains(TelemetryFlag.WHEEL)) {
             if (getDuckWheelMotor1() != null) {
                 telemetry.addData("Wheel 1 Power", getDuckWheelMotor1().getPower());
@@ -204,6 +206,7 @@ public class HardwareTJack {
             }
         }
 
+        //telemetry
         if (getTelemetryFlags().contains(TelemetryFlag.ARM)) {
             if (getArmMotor() != null) {
                 telemetry.addData("Arm Power", getArmMotor().getPower());
@@ -217,6 +220,7 @@ public class HardwareTJack {
             }
         }
 
+        //servo
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
             if (getClawServo() != null) {
                 telemetry.addData("Claw Position", getClawServo().getPosition());

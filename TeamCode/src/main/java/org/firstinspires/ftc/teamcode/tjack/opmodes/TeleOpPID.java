@@ -103,14 +103,10 @@ public class TeleOpPID extends CustomOpMode {
         // It might as well be greek (oh wait math uses greek letters)
         double r = Math.hypot(x, y);
         double joystickAngle = Math.atan2(y, x) - Math.PI / 4;
-        double rightX = gamepad1.right_stick_x;
+        //adjust to make turn less- for angles
+        double rightX = gamepad1.right_stick_x * 0.8;
 
         if (fieldRelative) joystickAngle -= Math.toRadians(getBot().getIMUAngle());
-
-        //don't know if this will work- try and make slow down on angles
-    if (rightX !=  0){
-            speedModifierA = 0.90;
-        }
 
         // Set the motor powers
         getBot().getFrontLeftMotor().setPower((r * Math.cos(joystickAngle) + rightX) * speedModifierA);
