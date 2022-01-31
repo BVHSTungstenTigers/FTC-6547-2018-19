@@ -95,11 +95,11 @@ public class HardwareTJack {
         duckWheelMotor2 = map.tryGet(DcMotor.class, "wheel2");
 
         if (clawServo0 != null) {
-            clawServo0.scaleRange(0, 0.25); // tested experimentally
+            clawServo0.scaleRange(0, 0.29); // tested experimentally
         }
 
         if (clawServo1 != null) {
-            clawServo1.scaleRange(0, 0.25); // tested experimentally
+            clawServo1.scaleRange(0, 0.29); // tested experimentally
         }
 
         if (duckWheelMotor1 != null) { // wheel should break
