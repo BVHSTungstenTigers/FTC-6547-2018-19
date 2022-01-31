@@ -125,16 +125,23 @@ public class TeleOpPID extends CustomOpMode {
         // Servo
         // Removed to promote only manual control with A/B
 
-        if (getBot().getClawServo() != null) { // Don't trigger if a button control has been done to override this
-            double position = getBot().getClawServo().getPosition();
+        if (getBot().getClawServo0() != null) { // Don't trigger if a button control has been done to override this
+            double position = getBot().getClawServo0().getPosition();
             position = position + gamepad2.left_trigger - gamepad2.right_trigger;
             if (position > 1) position = 1;;
             if (position < 0) position = 0;
 
             //triggers to open and close claw (rotate servos)
-            if (gamepad2.left_trigger>0) getBot().getClawServo().setPosition(1);
-            else if (gamepad2.right_trigger>0)getBot().getClawServo().setPosition(0);
-            getBot().getClawServo().setPosition(position);
+            if (gamepad2.left_trigger>0) {
+                getBot().getClawServo0().setPosition(1); //close
+                getBot().getClawServo1().setPosition(1);
+            }
+            else if (gamepad2.right_trigger>0) {
+                getBot().getClawServo0().setPosition(0); //open
+                getBot().getClawServo1().setPosition(0);
+            }
+            getBot().getClawServo0().setPosition(position);
+            getBot().getClawServo1().setPosition(position);
         }
 
 

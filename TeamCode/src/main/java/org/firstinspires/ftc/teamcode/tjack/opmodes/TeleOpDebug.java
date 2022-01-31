@@ -69,8 +69,12 @@ public class TeleOpDebug extends CustomOpMode {
             getBot().getDuckWheelMotor2().setPower(gamepad1.right_trigger * debugMotorSpeed);
         }
 
-        if (getBot().getClawServo() != null) {
-            getBot().getClawServo().setPosition(gamepad1.right_stick_x);
+        if (getBot().getClawServo0() != null) {
+            getBot().getClawServo0().setPosition(gamepad1.right_stick_x);
+        }
+
+        if (getBot().getClawServo1() != null) {
+            getBot().getClawServo1().setPosition(gamepad1.right_stick_x);
         }
 
         // Add telemetry for limit switch and LED
