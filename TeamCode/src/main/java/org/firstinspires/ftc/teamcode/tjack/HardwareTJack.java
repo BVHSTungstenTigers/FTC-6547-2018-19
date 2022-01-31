@@ -45,7 +45,8 @@ public class HardwareTJack {
     private final DcMotor backRightMotor; // backRight
 
     // Claw
-    private final Servo clawServo; // claw, optional
+    private final Servo clawServo0; // claw, optional
+    private final Servo clawServo1; // claw, optional
     private final DcMotorEx armMotor; // arm, optional
     private final int maxArmPosition = 350; /* START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND//
     was initially 380 (overextended for ally hub)*/
@@ -87,13 +88,18 @@ public class HardwareTJack {
         backRightMotor = map.get(DcMotor.class, "backRight");
 
         // Load the claw, arm, and wheel motors
-        clawServo = map.tryGet(Servo.class, "claw");
+        clawServo0 = map.tryGet(Servo.class, "clawLeft");
+        clawServo1 = map.tryGet(Servo.class, "clawRight");
         armMotor = map.tryGet(DcMotorEx.class, "arm");
         duckWheelMotor1 = map.tryGet(DcMotor.class, "wheel1");
         duckWheelMotor2 = map.tryGet(DcMotor.class, "wheel2");
 
-        if (clawServo != null) {
-            clawServo.scaleRange(0, 0.75); // tested experimentally
+        if (clawServo0 != null) {
+            clawServo0.scaleRange(0, 0.25); // tested experimentally
+        }
+
+        if (clawServo1 != null) {
+            clawServo1.scaleRange(0, 0.25); // tested experimentally
         }
 
         if (duckWheelMotor1 != null) { // wheel should break
@@ -110,6 +116,7 @@ public class HardwareTJack {
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Invert needed motors
+        clawServo1.setDirection(Servo.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -222,8 +229,8 @@ public class HardwareTJack {
 
         //servo
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
-            if (getClawServo() != null) {
-                telemetry.addData("Claw Position", getClawServo().getPosition());
+            if (getClawServo0() != null) {
+                telemetry.addData("Claw Position", getClawServo0().getPosition());
             } else {
                 telemetry.addLine("Claw Not Found");
             }
