@@ -34,14 +34,14 @@ public class TeleOpPID extends CustomOpMode {
         //floor
         registerOneShot(() -> gamepad2.a, () -> targetPosition = getBot().getMinArmPosition());
 
-        //Open claw
-        registerOneShot(() -> gamepad2.left_trigger>0, () -> {
+        //Close claw
+        registerOneShot(() -> gamepad2.right_trigger>0, () -> {
             getBot().getClawServo0().setPosition(1);
             getBot().getClawServo1().setPosition(1);
         });
 
-        //Open the claw
-        registerOneShot(() -> gamepad2.right_trigger>0, () -> {
+        //Open claw
+        registerOneShot(() -> gamepad2.left_trigger>0, () -> {
             getBot().getClawServo0().setPosition(0.5);
             getBot().getClawServo1().setPosition(0.5);
         });
@@ -135,7 +135,7 @@ public class TeleOpPID extends CustomOpMode {
 
         if (getBot().getClawServo0() != null) { // Don't trigger if a button control has been done to override this
             double position = getBot().getClawServo0().getPosition();
-            position += (gamepad2.dpad_left?0.1:0) - (gamepad2.dpad_right?0.1:0);
+            position += (gamepad2.dpad_right?0.12:0) - (gamepad2.dpad_left?0.12:0);
             if (position > 1) position = 1;
             if (position < 0) position = 0;
             getBot().getClawServo0().setPosition(position);
