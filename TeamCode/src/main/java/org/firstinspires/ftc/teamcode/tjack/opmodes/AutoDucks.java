@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class AutoDucks extends CustomLinearOpMode {
-    //is the forward speed var needed...? -joss
     private static final double FORWARD_SPEED = 0.5;
     private static final double WHEEL_SPEED = -0.25;
 

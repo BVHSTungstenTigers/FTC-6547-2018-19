@@ -44,7 +44,7 @@ public class HardwareTJack {
     private final DcMotor backLeftMotor; // backLeft
     private final DcMotor backRightMotor; // backRight
 
-    // Claw
+    // Claw and Arm
     private final Servo clawServo0; // claw, optional
     private final Servo clawServo1; // claw, optional
     private final DcMotorEx armMotor; // arm, optional

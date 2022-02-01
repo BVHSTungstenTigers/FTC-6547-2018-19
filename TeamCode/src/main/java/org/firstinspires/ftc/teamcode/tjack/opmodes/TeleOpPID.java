@@ -13,6 +13,7 @@ import java.util.EnumSet;
 public class TeleOpPID extends CustomOpMode {
     private boolean fieldRelative = true;
     private double targetPosition;
+    private boolean motorToggle = true;
 
     public TeleOpPID() {
         super(EnumSet.of(TelemetryFlag.ARM, TelemetryFlag.CLAW));
@@ -31,17 +32,20 @@ public class TeleOpPID extends CustomOpMode {
         registerOneShot(() -> gamepad2.y, () -> targetPosition = 100);
         //top level
         registerOneShot(() -> gamepad2.x, () -> targetPosition = 150 );
-        //floor
-        registerOneShot(() -> gamepad2.a, () -> targetPosition = getBot().getMinArmPosition());
+
+        //arm motor power toggle (= operator returns assigned value)
+        registerOneShot(() -> gamepad2.a, () -> getBot().getArmMotor().setPower((motorToggle = !motorToggle) ? 1 : 0));
+        //start power on arm motor
+
 
         //Close claw
-        registerOneShot(() -> gamepad2.right_trigger>0, () -> {
+        registerOneShot(() -> gamepad2.right_trigger > 0, () -> {
             getBot().getClawServo0().setPosition(1);
             getBot().getClawServo1().setPosition(1);
         });
 
         //Open claw
-        registerOneShot(() -> gamepad2.left_trigger>0, () -> {
+        registerOneShot(() -> gamepad2.left_trigger > 0, () -> {
             getBot().getClawServo0().setPosition(0.5);
             getBot().getClawServo1().setPosition(0.5);
         });
