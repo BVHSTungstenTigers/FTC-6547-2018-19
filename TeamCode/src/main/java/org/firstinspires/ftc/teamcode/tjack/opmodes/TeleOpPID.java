@@ -27,14 +27,14 @@ public class TeleOpPID extends CustomOpMode {
 
         //controller 2 arm level controls (one shot- executes code once)
         //bottom level
-        registerOneShot(() -> gamepad2.b, () -> targetPosition = 50);
+        registerOneShot(() -> gamepad2.a, () -> targetPosition = 50);
         //middle hub
         registerOneShot(() -> gamepad2.y, () -> targetPosition = 100);
         //top level
-        registerOneShot(() -> gamepad2.x, () -> targetPosition = 150 );
+        registerOneShot(() -> gamepad2.b, () -> targetPosition = 150 );
 
         //arm motor power toggle (= operator returns assigned value)
-        registerOneShot(() -> gamepad2.a, () -> getBot().getArmMotor().setPower((motorToggle = !motorToggle) ? 1 : 0));
+        registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setPower((motorToggle = !motorToggle) ? 1 : 0));
         //start power on arm motor
 
 

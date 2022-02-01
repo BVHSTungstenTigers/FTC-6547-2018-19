@@ -107,7 +107,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         }
         else {
             //for blue
-            sleep(900);
+            sleep(500);
         }
 
         //move forward towards ally parking
@@ -117,7 +117,13 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
 
         //run time for drive forwards (overextends as a reassurance)
-        sleep(850);
+        if(ALLIANCE_COLOR == RED){
+            sleep(850);
+        }
+        else {
+            //for blue
+            sleep(1000);
+        }
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);
