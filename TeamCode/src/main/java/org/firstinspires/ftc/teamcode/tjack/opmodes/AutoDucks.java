@@ -42,7 +42,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * FORWARD_SPEED);
 
         //run time for turn
-        sleep(ALLIANCE_COLOR == RED ? 540 : 450);
+        sleep(ALLIANCE_COLOR == RED ? 540 : 400);
 
         //move forward towards ducks
         getBot().getFrontLeftMotor().setPower(1 * FORWARD_SPEED);
@@ -70,8 +70,8 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         sleep(200);
 
         //spin duck
-        getBot().getDuckWheelMotor1().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * WHEEL_SPEED);
-        getBot().getDuckWheelMotor2().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * WHEEL_SPEED);
+        getBot().getDuckWheelMotor1().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * WHEEL_SPEED);
+        getBot().getDuckWheelMotor2().setPower((ALLIANCE_COLOR == RED ? 1 : -1) * WHEEL_SPEED);
 
         //run time for duck spinner
         sleep(5050);
@@ -99,7 +99,7 @@ public abstract class AutoDucks extends CustomLinearOpMode {
         getBot().getBackRightMotor().setPower((ALLIANCE_COLOR == RED ? 1 : 1) * FORWARD_SPEED);
 
         //run time for drive forwards (overextends as a reassurance)
-        sleep(ALLIANCE_COLOR == RED ? 850 : 1000);
+        sleep(ALLIANCE_COLOR == RED ? 850 : 825);
 
         getBot().getFrontLeftMotor().setPower(0);
         getBot().getFrontRightMotor().setPower(0);

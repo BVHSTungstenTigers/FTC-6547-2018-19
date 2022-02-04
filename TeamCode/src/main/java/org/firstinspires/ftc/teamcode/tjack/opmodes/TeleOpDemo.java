@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -27,11 +28,8 @@ public class TeleOpDemo extends CustomOpMode {
         registerOneShot(() -> gamepad1.y, () -> targetPosition = 100);
         registerOneShot(() -> gamepad1.a, () -> targetPosition = 50);
 
-        // Setup PID bs
+        // Setup PID
         if (getBot().getArmMotor() != null) {
-            // Unknown
-            // PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
-            // getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
             targetPosition = getBot().getArmMotor().getCurrentPosition();
             getBot().getArmMotor().setTargetPosition(targetPosition);
             getBot().getArmMotor().setPower(1);

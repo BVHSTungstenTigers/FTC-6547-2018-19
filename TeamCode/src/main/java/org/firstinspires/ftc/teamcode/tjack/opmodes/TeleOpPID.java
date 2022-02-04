@@ -1,3 +1,6 @@
+/*This file is the main file for running driver mode operations. It sets up things like arm PIDs
+* (target values that the motor will move the arm to) and relative field. */
+
 package org.firstinspires.ftc.teamcode.tjack.opmodes;
 //bot IP address adb connect 192.168.43.1
 
@@ -31,7 +34,7 @@ public class TeleOpPID extends CustomOpMode {
         //middle hub
         registerOneShot(() -> gamepad2.y, () -> targetPosition = 100);
         //top level
-        registerOneShot(() -> gamepad2.b, () -> targetPosition = 150 );
+        registerOneShot(() -> gamepad2.b, () -> targetPosition = 300 );
 
         //arm motor power toggle (= operator returns assigned value)
         registerOneShot(() -> gamepad2.x, () -> getBot().getArmMotor().setPower((motorToggle = !motorToggle) ? 1 : 0));
