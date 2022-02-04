@@ -1,3 +1,4 @@
+/*Custom Function we made to make things easier for code we want to execute once when a button is pressed.*/
 package org.firstinspires.ftc.teamcode.tjack;
 
 import java.util.function.BooleanSupplier;

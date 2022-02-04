@@ -14,7 +14,7 @@ import lombok.Getter;
 /*To explain it shortly, for our Autonomous mode because of its OpMode it throws
 exceptions where there are loops and in our AutoDucks we have a loop within a loop
 (sleep in a sleep) so it throws and exception and stops the code. Having it call upon
-a different OpMode (CustomLinearOpMode) from the "CustomOpMode" it won't throw anymore.*/
+a different OpMode (CustomLinearOpMode) from the "CustomOpMode" it won't throw exceptions anymore.*/
 
 public abstract class CustomLinearOpMode extends LinearOpMode {
     @Getter

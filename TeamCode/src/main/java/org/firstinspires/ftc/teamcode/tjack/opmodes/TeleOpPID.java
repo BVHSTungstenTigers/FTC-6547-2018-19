@@ -1,5 +1,6 @@
 /*This file is the main file for running driver mode operations. It sets up things like arm PIDs
-* (target values that the motor will move the arm to) and relative field. */
+* (target values that the motor will move the arm to) and relative field. It also controls driving
+* and arm/claw/spinner movement*/
 
 package org.firstinspires.ftc.teamcode.tjack.opmodes;
 //bot IP address adb connect 192.168.43.1
@@ -63,17 +64,8 @@ public class TeleOpPID extends CustomOpMode {
             getBot().getClawServo1().setPosition(0.5);
         });
 
-        /*targetPosition = getBot().getMinArmPosition() does not work*/
-
-        /* [removed function] max (behind)
-        registerOneShot(() -> gamepad2.x, () -> targetPosition = getBot().getMaxArmPosition());*/
-
-
-        // Setup PID bs
+        // Setup PID
         if (getBot().getArmMotor() != null) {
-            // Unknown
-            // PIDFCoefficients coefficients = new PIDFCoefficients(getBot().getArmPidValue() / 10, getBot().getArmPidValue() / 100, 0, getBot().getArmPidValue());
-            // getBot().getArmMotor().setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
             targetPosition = getBot().getArmMotor().getCurrentPosition();
             getBot().getArmMotor().setTargetPosition((int) targetPosition);
             getBot().getArmMotor().setPower(1);
@@ -93,9 +85,6 @@ public class TeleOpPID extends CustomOpMode {
         // CTRL 2 ARM SPEED: Left + right bumper = sneak + spring buttons.
         // Hold them down
         double speedModifierB = gamepad2.left_bumper ? 0.3 : (gamepad2.right_bumper ? 1 : 0.7);
-
-        /*//angle speed (make it happen slowly)
-        double speedModifierC = 0.90;*/
 
         //
         // DRIVING
@@ -128,8 +117,6 @@ public class TeleOpPID extends CustomOpMode {
             y /= max;
         }
 
-        // I have no idea what this math means
-        // It might as well be greek (oh wait math uses greek letters)
         double r = Math.hypot(x, y);
         double joystickAngle = Math.atan2(y, x) - Math.PI / 4;
         //adjust to make turn less- for angles

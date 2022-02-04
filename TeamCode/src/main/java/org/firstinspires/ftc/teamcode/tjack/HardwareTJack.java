@@ -1,3 +1,6 @@
+/*This is are hardware file where we load the motors, servos, duck wheels, and other mechanics.
+We also load telemetry (essentially stats) onto the Driver hub through this file. Other variables
+such as max/min arm position are set here as well.*/
 package org.firstinspires.ftc.teamcode.tjack;
 
 import android.os.Environment;
