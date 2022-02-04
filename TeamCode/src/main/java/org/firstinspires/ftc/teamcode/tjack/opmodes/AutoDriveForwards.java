@@ -1,3 +1,6 @@
+/* This file is the auto mode for driving forwards into the warehouse. Essentially it tells the
+bot to drive forward for a set amount of milliseconds*/
+
 package org.firstinspires.ftc.teamcode.tjack.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
