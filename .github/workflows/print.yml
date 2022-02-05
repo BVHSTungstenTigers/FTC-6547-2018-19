@@ -14,10 +14,10 @@ jobs:
       run: sudo apt-get install -y enscript ghostscript
     - name: create pdf (each file on own page)
       run: |
-        enscript -r --file-align=2 --highlight --line-numbers --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - EachOnOwnPage.pdf
-        enscript -r --highlight --line-numbers --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - EcoFriendly.pdf
+        enscript -R --file-align=2 --highlight --line-numbers --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - EachOnOwnPage.pdf
+        enscript -r --columns=2 --highlight --line-numbers --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - EcoFriendly.pdf
     - name: upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Each Doc on Own Page
+        name: Reports (Download)
         path: "*.pdf"
