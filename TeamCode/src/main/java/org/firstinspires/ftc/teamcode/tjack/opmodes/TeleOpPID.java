@@ -37,13 +37,12 @@ public class TeleOpPID extends CustomOpMode {
         //top level
         registerOneShot(() -> gamepad2.b, () -> {
             //sets initial position
-            targetPosition = 250;
+            int i = 250;
+            targetPosition = i;
             //sets speed for raise
             getBot().getArmMotor().setPower(0.5);
             //
-            for(int i = 250; i < getBot().getMaxArmPosition();){
-                i += 10;
-            }
+            for(int i = 250; i < getBot().getMaxArmPosition(); i += 10);
         });
 
         //arm motor power toggle (= operator returns assigned value)
