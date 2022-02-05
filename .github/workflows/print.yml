@@ -12,10 +12,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: install software
       run: sudo apt-get install -y enscript ghostscript
-    - name: create pdf
-      run: "enscript -r -2 --file-align=2 --highlight --line-numbers -n 1 --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - files.pdf"
-    - name: upload artifact
+    - name: create pdf (each file on own page)
+      run: |
+        enscript -r --file-align=2 --highlight --line-numbers --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - EachOnOwnPage.pdf
+        enscript -r --highlight --line-numbers --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - EcoFriendly.pdf
+    - name: upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Report
-        path: files.pdf
+        name: Each Doc on Own Page
+        path: "*.pdf"
