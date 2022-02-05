@@ -13,7 +13,7 @@ jobs:
     - name: install software
       run: sudo apt-get install -y enscript ghostscript
     - name: create pdf
-      run: "enscript -r -2 --file-align=2 --highlight --line-numbers -n 1 --color -o - `find . \( -name '*.java' -or -name '*.gradle' \) -and -not -path './FtcRobotController/*'` | ps2pdf - files.pdf"
+      run: "enscript -r -2 --file-align=2 --highlight --line-numbers -n 1 --color -o - `find . \\( -name '*.java' -or -name '*.gradle' \\) -and -not -path './FtcRobotController/*'` | ps2pdf - files.pdf"
     - name: upload artifact
       uses: actions/upload-artifact@v2
       with:
