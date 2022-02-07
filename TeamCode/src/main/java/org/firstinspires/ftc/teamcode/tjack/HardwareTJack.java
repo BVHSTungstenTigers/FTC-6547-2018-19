@@ -1,6 +1,3 @@
-/*This is are hardware file where we load the motors, servos, duck wheels, and other mechanics.
-We also load telemetry (essentially stats) onto the Driver hub through this file. Other variables
-such as max/min arm position are set here as well.*/
 package org.firstinspires.ftc.teamcode.tjack;
 
 import android.os.Environment;
@@ -51,8 +48,9 @@ public class HardwareTJack {
     private final Servo clawServo0; // claw, optional
     private final Servo clawServo1; // claw, optional
     private final DcMotorEx armMotor; // arm, optional
-    private final int maxArmPosition = 300; /* START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND*/
-    private final int minArmPosition = 0; // min value
+    private final int maxArmPosition = 350; /* START THE ARM ON TOP OF THE HARDWARE STOP, NOT THE GROUND//
+    was initially 380 (overextended for ally hub)*/
+    private final int minArmPosition = 0; // was initially 0 (overextended)
 
     // Wheel
     private final DcMotor duckWheelMotor1; // wheel1, optional
@@ -97,11 +95,11 @@ public class HardwareTJack {
         duckWheelMotor2 = map.tryGet(DcMotor.class, "wheel2");
 
         if (clawServo0 != null) {
-            clawServo0.scaleRange(0, 0.20); // tested experimentally
+            clawServo0.scaleRange(0, 0.30); // tested experimentally
         }
 
         if (clawServo1 != null) {
-            clawServo1.scaleRange(0, 0.20); // tested experimentally
+            clawServo1.scaleRange(0, 0.30); // tested experimentally
         }
 
         if (duckWheelMotor1 != null) { // wheel should break
@@ -141,7 +139,7 @@ public class HardwareTJack {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode TODO Where is this file and is there a default?
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         // parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
@@ -232,9 +230,14 @@ public class HardwareTJack {
         //servo
         if (getTelemetryFlags().contains(TelemetryFlag.CLAW)) {
             if (getClawServo0() != null) {
-                telemetry.addData("Claw Position", getClawServo0().getPosition());
+                telemetry.addData("Claw 0 Position", getClawServo0().getPosition());
             } else {
-                telemetry.addLine("Claw Not Found");
+                telemetry.addLine("Claw 0 Not Found");
+            }
+            if (getClawServo1() != null) {
+                telemetry.addData("Claw 1 Position", getClawServo1().getPosition());
+            } else {
+                telemetry.addLine("Claw 1 Not Found");
             }
         }
     }
